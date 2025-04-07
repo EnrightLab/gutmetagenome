@@ -161,7 +161,9 @@ We build a BLAST database as follows:
 `makeblastdb -in genome.fasta -dbtype="nucl"`
 
 blastn is performed as follows:
-`blastn -query query.fasta -db genome.fasta -outfmt '7 qseqid sseqid pident mismatch gapopen qstart qend sstart send evalue bitscore length qlen qseq sseq'  -word_size 8 -evalue 1e-5 -num_threads 12`
+```
+blastn -query query.fasta -db genome.fasta -outfmt '7 qseqid sseqid pident mismatch gapopen qstart qend sstart send evalue bitscore length qlen qseq sseq'  -word_size 8 -evalue 1e-5 -num_threads 12
+```
 
 This is performed by an accessory script [blaster.pl](scripts/blaster.pl) which handles the *blastn* and filtering to one hit per metagenomic read.
 
