@@ -127,16 +127,20 @@ This database had a *k-mer* size of 35.
 * Circos Version Used: `circos 0.69-9`
 
 For genomes of interest we download a reference in *Genbank* format, e.g. `Akkermansia.gb` is the Genbank entry (CP001071.1) for Akkermansia sp.
-We then use a perl script to interrogate all kraken mapping files to identify reads hitting the species of interest.
+We then use a perl script [find_species_hits.pl](scripts/find_species_hits.pl)to interrogate all kraken mapping files to identify reads hitting the species of interest.
 These reads are extracted into a new *FASTA* file. We also extract a genome *FASTA* file from the same genbank file.
 
 To identify per genome mappings we use *blastn* to map the reads against the reference genome *FASTA*.
+
+* `blast 2.16.0, build Jun 25 2024 12:36:54`
 
 We build a BLAST database as follows:
 `makeblastdb -in genome.fasta -dbtype="nucl"`
 
 blastn is performed as follows:
 `blastn -query query.fasta -db genome.fasta -outfmt '7 qseqid sseqid pident mismatch gapopen qstart qend sstart send evalue bitscore length qlen qseq sseq'  -word_size 8 -evalue 1e-5 -num_threads 12`
+
+This is performed by an accessory script [blaster.pl](scripts/blaster.pl) which handles the *blastn* and filtering to one hit per metagenomic read.
 
 This produces tabular output which is processed in perl to annotate hits like below:
 ```
@@ -200,7 +204,8 @@ This perl script computes the key track files:
 
 This creates a *png* and an *svg* vector graphic for each species of interest.
 
-All species are run with a simple shell script:
+All species are run with a simple shell script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl):
+
 ```
 #!/bin/sh
 ./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf test.conf; cp circos.svg akkermansia.svg; open circos.png
