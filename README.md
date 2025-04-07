@@ -1,6 +1,8 @@
 # Dalia Bornstein - Part II Project
 
-This is a Github supporting Dalia's Part II Project which contains computational methods and code snippets described in my part II Writeup.
+This is a Github supporting Dalia Bornstein's Part II Project which contains computational methods and code as described in my part II report.
+
+---
 
 ## Illumina 16S Amplicon Analysis
 This section describes the analysis framework (mostly in R/Bioconductor) for processing and analysing
@@ -43,9 +45,11 @@ We used the [SILVA database](https://benjjneb.github.io/dada2/training.html).
 
 ### Illumina 16S Analysis R/BioConductor Code
 
-The full codebase in R/BioConductor and source data are in the markdown provided.
+The full codebase in R/BioConductor and source data are in the [markdown provided](Illumina-16S-DADA2.md).
 
 * [Illumina-16S-DADA2.md](Illumina-16S-DADA2.md)
+
+---
 
 ## Nanopore Metagenomics
 
@@ -98,12 +102,15 @@ kraken2 --use-names --threads 4 --confidence 0.5 --db kraken_db --report barcode
 * `--gzip-compressed` (Read query reads from a gzip file, e.g. fastq.gz)
 
 ### Bracken Abundance Analysis
-`est_abundance.py -i barcodeX.kraken2.txt -k kraken_db/database75mers.kmer_distrib -l S -t 10 -o barcodeX.bracken.txt`
+```
+est_abundance.py -i barcodeX.kraken2.txt -k kraken_db/database75mers.kmer_distrib -l S -t 10 -o barcodeX.bracken.txt
+```
 
 * `-i barcodeX.kraken2.txt` (input file from kraken)
 * `-k kraken_db/database75mers.kmer_distrib` (k-mers file from database)
 * `-l S` (species level calls)
 * `-t 10` (use 10 cpus)
+* `-o barcodeX.bracken.txt` (output abundance information in new report file)
 
 ### Metagenomic Database Used
 
@@ -124,13 +131,17 @@ This database had a *k-mer* size of 35.
 # Min clear hash value = 0
 ```
 
+---
+
 ## Metagenome Visualisation
 
 ### Krona Plots
 Individual Bracken report files (or Kraken report files) can be turned into a Krona HTML visualisation.
 For this we use the following command from `KronaTools v2.8.1`:
 
-`ktImportTaxonomy -t 5 -m 3 -o barcodeX.html barcodeX.bracken.report.txt`
+```
+ktImportTaxonomy -t 5 -m 3 -o barcodeX.html barcodeX.bracken.report.txt
+```
 
 This uses 5 threads and generates a html report (barcodeX.html) from the input report.
 
@@ -212,7 +223,9 @@ These track files are:
 #### Command Line
 This perl script computes the key track files:
 
-`./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf metagenome.conf`
+```
+./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf metagenome.conf
+```
 
 This creates a *png* and an *svg* vector graphic for each species of interest.
 
