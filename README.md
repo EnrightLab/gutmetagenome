@@ -7,8 +7,7 @@ This is a Github supporting Dalia's Part II Project which contains computational
 ### Nanopore Basecalling Command
 
 This command was run and it was version `guppy 4.0.32x 12/10/24`. `guppy-ont-gpu -in filex.fastq -out basecalled.fastq.gz -evalue 10`
-=======
-This command was run and it was version `guppy 4.0.32x 12/10/24`.
+
 `guppy-ont-gpu -in filex.fastq -out basecalled.fastq.gz -evalue 10`
 
 
