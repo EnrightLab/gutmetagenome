@@ -22,6 +22,14 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(RColorBrewer); packageVersion("RColorBrewer")
 library(dada2); packageVersion("dada2")
 library(kableExtra) ; packageVersion("kableExtra")
+library(microbiome); packageVersion("microbiome")
+library(microViz); packageVersion("microViz")
+library(phyloseq); packageVersion("phyloseq")
+library(Biostrings); packageVersion("Biostrings")
+library(ggplot2); packageVersion("ggplot2")
+theme_set(theme_bw()); # Set ggplot theme
+library(dplyr); packageVersion("dplyr")
+library(gdata); packageVersion("gdata")
 ```
 
 ```{r}
@@ -40,7 +48,7 @@ fnRs <- sort(list.files(path, pattern="_R2.fastq.gz", full.names = TRUE))
 
 sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
 
-kable(sample.names,label = "Sample Names")
+kable(sample.names,caption = "Sample Names")
 ```
 
 
@@ -89,7 +97,7 @@ errR <- learnErrors(filtRs, multithread=TRUE)
 # Plot Error Rates
 
 Look at the different types of errors that occur against our model of Illumina Error Rates.
-```{r fig.width=10,fig.height=7}
+```{r fig.width=10,fig.height=7, dpi=300}
 plotErrors(errF, nominalQ=TRUE)
 ```
 
@@ -153,13 +161,13 @@ Lets compute how many chimeras we actually had per sample.
 
 
 # Track Reads through Pipeline
-```{r}
+```{r fig.width=10,fig.height=7, dpi=300}
 getN <- function(x) sum(getUniques(x))
 track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim))
 # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
 colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
 rownames(track) <- sample.names
-knitr::kable(track,caption = "Sample Filtering Table")
+kable(track,caption = "Sample Filtering Table")
 
 colours=brewer.pal(n = 10, name = "Set3")
 barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
@@ -175,8 +183,8 @@ legend("bottomright",names(colours),fill=colours,cex=0.4)
 We use version 132 of the SILVA 16s rRNA database for bacteria to assign. We use the training set for standard assignment and a separate species level file for species level assignment where possible.
 ```{r}
 # Assign Taxonomy
-silva_train=paste0("./silva_nr_v132_train_set.fa")
-silva_species=paste0("./silva_species_assignment_v132.fa")
+silva_train=paste0("./16s_taxonomy/silva_nr_v132_train_set.fa.gz")
+silva_species=paste0("./16s_taxonomy/silva_species_assignment_v132.fa.gz")
  
 taxa <- assignTaxonomy(seqtab.nochim, silva_train, multithread=TRUE,verbose=TRUE)
 ```
@@ -222,18 +230,252 @@ for (i in 1:nrow(taxa)){
    }
  }
 }
+
+rm(taxa2)
+rm(taxa3)
 ```
 
 # Save Taxonomic Objects
-
-We can load these in the next analysis script as needed.
+We could decide to save the R objects now, so that they can be reloaded later.
+We could then load these in the next analysis script as needed.
 ```{r}
-saveRDS(seqtab.nochim,file="seqtab.rds")
-saveRDS(taxa,file="taxa.rds")
-saveRDS(taxa2,file="taxa2.rds")
-saveRDS(taxa3,file="taxa3.rds")
+#saveRDS(seqtab.nochim,file="seqtab.rds")
+#saveRDS(taxa2,file="taxa2.rds")
+#saveRDS(taxa,file="taxa.rds")
+#saveRDS(taxa3,file="taxa3.rds")
 ```
 
+## Illumina Microbiome Analysis
+
+Now we move to *phyloseq* and use multiple plots to explore microbiome prevalence and abundance across samples. 
+
+## Prepare Object Table 
+
+Create some simple tables including samdf for our samples, display our sample table here.
+```{r}
+samples.out <- rownames(seqtab)
+subject <- samples.out
+samdf <- data.frame(Subject=subject)
+rownames(samdf) <- samples.out
+```
+
+## Make our phyloseq object for subsequent analysis.
+```{r}
+ps <- phyloseq(otu_table(seqtab, taxa_are_rows=FALSE), 
+               sample_data(samdf), 
+               tax_table(taxa))
+```
+
+## Analysis of ASV assignment across taxonomy per sample
+
+Lets explore how each sample did with taxonomic assignment across the levels.
+```{r fig.width=10,fig.height=7, dpi=300}
+ps.melt <- ps %>% psmelt()
+taxLevels = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species")
+
+table=data.frame(samples.out)
+rownames(table)=table$samples.out
+
+for (i in 1:length(taxLevels)){
+  table[,taxLevels[i]]=0
+  for (j in 1:length(samples.out)){
+    subt= ps.melt[ps.melt$Sample==samples.out[j],]
+    table[samples.out[j],taxLevels[i]]=sum(subt[!is.na(subt[,taxLevels[i]]),"Abundance"])
+  }
+}
+
+colours=brewer.pal(n = 7, name = "Set2")
+names(colours)=taxLevels
+barplot(t(table[,2:8]),beside=TRUE,las=2,cex.axis=0.5,cex.names=0.5,col=colours,main="Resolution to Taxonomic Level",sub="Abundance Per sample")
+legend("topright",names(colours),fill=colours,cex=0.4)
+
+```
+
+## Process the DNA data also for possible phylogenetics
+```{r}
+dna <- Biostrings::DNAStringSet(taxa_names(ps))
+names(dna) <- taxa_names(ps)
+ps <- merge_phyloseq(ps, dna)
+taxa_names(ps) <- paste0("ASV", seq(ntaxa(ps)))
+ps
+```
+# Analysis
+
+## Visualise Alpha-Diversity
+
+Lets look at microbial diversity and richness across the sample space.
+
+```{r fig.width=10,fig.height=7, dpi=300}
+sample_data(ps)$SampleID <- rownames(sample_data(ps))
+plot_richness(ps, x="SampleID", measures=c("Shannon", "Simpson"), color="SampleID")
+```
+
+
+## Ordinate Analysis
+
+```{r fig.width=10,fig.height=7, dpi=300}
+# Transform data to proportions as appropriate for Bray-Curtis distances
+ps.prop <- transform_sample_counts(ps, function(otu) otu/sum(otu))
+ord.nmds.bray <- ordinate(ps.prop, method="NMDS", distance="bray")
+
+plot_ordination(ps.prop, ord.nmds.bray, color="SampleID", title="Bray NMDS")
+
+top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
+ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
+ps.top20 <- prune_taxa(top20, ps.top20)
+plot_bar(ps.top20, x="SampleID", fill="Family") + facet_wrap(~Subject, scales="free_x")
+plot_bar(ps.top20, x="SampleID", fill="Genus") + facet_wrap(~Subject, scales="free_x")
+
+```
+
+## Relative Abundance by Family
+
+```{r fig.width=10,fig.height=7, dpi=300}
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+ps_filtered <- filter_taxa(ps_rel, function(x) mean(x) > 0.0001, TRUE)
+plot_bar(ps_filtered, x = "SampleID", fill = "Family") +
+  theme_minimal() +
+  labs(y = "Relative Abundance")
+```
+
+## Prevalence Analysis by Phyla
+
+Lets now compute new Prevlance Tables by Phylum and then Genus.
+
+```{r fig.width=10,fig.height=7}
+prevdf <- apply(X = otu_table(ps),
+MARGIN = ifelse(taxa_are_rows(ps), yes = 1, no = 2),
+FUN = function(x){sum(x > 0)})
+# Add taxonomy and total read counts to this data.frame
+prevdf <- data.frame(Prevalence = prevdf, TotalAbundance = taxa_sums(ps),
+tax_table(ps))
+ggplot(prevdf, aes(TotalAbundance, Prevalence / nsamples(ps),color=Phylum)) +
+  # Include a guess for parameter
+geom_point(size = 2, alpha = 0.7) +
+geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) +
+scale_x_log10() + xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") + facet_wrap(~Phylum) + theme(legend.position="none") + ggtitle("Bacteria Prevalence Phylum")
+```
+## Prevalence Analysis by Genus
+
+Same again, but now by Genus level. Perhaps too much detail.
+
+```{r fig.width=10,fig.height=12}
+prevdf <- apply(X = otu_table(ps),
+MARGIN = ifelse(taxa_are_rows(ps), yes = 1, no = 2),
+FUN = function(x){sum(x > 0)})
+# Add taxonomy and total read counts to this data.frame
+prevdf <- data.frame(Prevalence = prevdf, TotalAbundance = taxa_sums(ps),
+tax_table(ps))
+ggplot(prevdf, aes(TotalAbundance, Prevalence / nsamples(ps),color=Genus)) +
+  # Include a guess for parameter
+geom_point(size = 1, alpha = 0.7) +
+geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) +
+theme(strip.text = element_text(size = rel(0.5))) +
+scale_x_log10() + xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") + facet_wrap(~Genus) + theme(legend.position="none") + ggtitle("Bacteria Prevalence Genus")
+```
+
+## Nicer Plots for Diversity and Richness
+
+```{r fig.width=10,fig.height=7}
+
+
+colour_c=brewer.pal(n = length(samdf$Subject), name = "Set3")
+names(colour_c)=samdf$Subject
+
+p = plot_richness(ps, x="Subject", title="Diversity and Richness", color="Subject", measures=c("Shannon","Simpson")) 
+p + geom_point(size=5, alpha=0.7) + scale_color_manual(values=colour_c)
+
+```
+
+## Ordination Plot (PCA like) Bray Curtis Distance
+
+```{r fig.width=10,fig.height=7}
+ps.ord <- ordinate(ps, "PCoA", "bray")
+p=plot_ordination(ps, ps.ord, type="samples", label = "Subject", color = "Subject", title = "Bacterial Bray-Curtis Distance by Sample Type") 
+p + geom_point(size=5, alpha=0.7) + scale_color_manual(values=colour_c)
+```
+
+
+## Prettier Genus Level Plots
+
+```{r fig.width=10,fig.height=7}
+ps16=ps
+psq <- ps16 %>%
+  tax_filter(min_prevalence = 5) %>%
+  tax_fix()
+psq %>%
+  comp_barplot(tax_level = "Genus",n_taxa=20,label="Subject") +
+  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+
+psq %>%
+  comp_barplot(tax_level = "Genus",n_taxa=20,label="Subject") + 
+  theme(legend.key.size = unit(0.2, 'cm'),
+        legend.text = element_text(size=5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
+```
+
+
+## Prettier Genus and Species Plots
+
+```{r fig.width=10,fig.height=7}
+
+psq %>%
+  comp_barplot(tax_level = "Order",n_taxa=10,label="Subject") +
+  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+
+psq %>%
+  comp_barplot(tax_level = "Order",n_taxa=10,label="Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),
+        legend.text = element_text(size=5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
+
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),
+        legend.text = element_text(size=5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
+
+```
+
+```{r,fig.width=10,fig.height=7}
+
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),
+        legend.text = element_text(size=5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
+
+```
+
+## Iris Plot of Genus Level Ordination
+
+```{r,fig.width=10,fig.height=7}
+psq %>%
+  tax_transform("clr", rank = "Genus") %>%
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
+  ord_calc() %>%
+  ord_plot_iris(tax_level = "Genus", ord_plot = "none", n_taxa = 20, anno_colour = "Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+```
+
+## Iris Plot of Species Level Ordination
+
+```{r,fig.width=10,fig.height=7}
+psq %>%
+  tax_transform("clr", rank = "Species") %>%
+  # when no distance matrix or constraints are supplied, PCA is the default/auto ordination method
+  ord_calc() %>%
+  ord_plot_iris(tax_level = "Species", ord_plot = "none", n_taxa = 20, anno_colour = "Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+```
 
 
 
