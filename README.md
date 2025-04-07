@@ -208,19 +208,19 @@ All species are run with a simple shell script [make_karyotype_gb.pl](scripts/ma
 
 ```
 #!/bin/sh
-./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf test.conf; cp circos.svg akkermansia.svg; open circos.png
-./make_karyotype_gb.pl herelleviridae.gb herelleviridae.hits --names;  circos -conf test.conf; cp circos.svg herelleviridae.svg; open circos.png
-./make_karyotype_gb.pl methano_smithii.gb methanobrevibacter.hits methanobrevibacter.skew; circos -conf test.conf; cp circos.svg methano_smithii.svg; open circos.png
-./make_karyotype_gb.pl methanomassiliicoccus.gb methanomassiliicoccus.hits methanomassiliicoccus.skew --names; circos -conf test.conf; cp circos.svg methanomassiliicoccus.svg; open circos.png
-./make_karyotype_gb.pl methanosphaera.gb methanosphaera.hits methanosphaera.skew --names;  circos -conf test.conf; cp circos.svg methanosphaera.svg; open circos.png
-./make_karyotype_gb.pl suterella.gb suterella.hits suterella.skew;  circos -conf test.conf; cp circos.svg suterella.svg; open circos.png
-./make_karyotype_chr.pl candida.gb candida.hits; circos -conf test2.conf; cp circos.svg candida.svg; open circos.png
+./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf circos.conf; cp circos.svg akkermansia.svg; open circos.png
+./make_karyotype_gb.pl herelleviridae.gb herelleviridae.hits --names;  circos -conf circos.conf; cp circos.svg herelleviridae.svg; open circos.png
+./make_karyotype_gb.pl methano_smithii.gb methanobrevibacter.hits methanobrevibacter.skew; circos -conf circos.conf; cp circos.svg methano_smithii.svg; open circos.png
+./make_karyotype_gb.pl methanomassiliicoccus.gb methanomassiliicoccus.hits methanomassiliicoccus.skew --names; circos -conf circos.conf; cp circos.svg methanomassiliicoccus.svg; open circos.png
+./make_karyotype_gb.pl methanosphaera.gb methanosphaera.hits methanosphaera.skew --names;  circos -conf circos.conf; cp circos.svg methanosphaera.svg; open circos.png
+./make_karyotype_gb.pl suterella.gb suterella.hits suterella.skew;  circos -conf circos.conf; cp circos.svg suterella.svg; open circos.png
+./make_karyotype_chr.pl candida.gb candida.hits; circos -conf circos.conf; cp circos.svg candida.svg; open circos.png
 ```
 
 
 ### Circos configuration file
 
-The configuration file to show an outer karyotype, inner gene bodies and labels, coverage and finally genome skew is as follows:
+The configuration file [circos.conf](scripts/circos.conf) to show an outer karyotype, inner gene bodies and labels, coverage and finally genome skew is as follows:
 
 ```
 <<include etc/colors_fonts_patterns.conf>>
