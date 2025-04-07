@@ -47,7 +47,8 @@ We used the [SILVA database](https://benjjneb.github.io/dada2/training.html).
 
 The full codebase in R/BioConductor and source data are in the [markdown provided](Illumina-16S-DADA2.md).
 
-* [Illumina-16S-DADA2.md](Illumina-16S-DADA2.md)
+* [Illumina-16S-DADA2.md](Illumina-16S-DADA2.md) - Markdown For Github Viewing.
+* [Illumina-16S-DADA2.Rmd](Illumina-16S-DADA2.Rmd) - RMarkdown master script.
 
 ---
 
