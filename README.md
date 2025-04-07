@@ -230,7 +230,9 @@ This perl script computes the key track files:
 This creates a *png* and an *svg* vector graphic for each species of interest.
 
 All species are run with a simple shell script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl):
-
+\tiny 
+This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (Vanderbilt Center for Quantitative Sciences).
+\normalsize
 ```
 #!/bin/sh
 ./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf circos.conf; cp circos.svg akkermansia.svg; open circos.png
