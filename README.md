@@ -8,7 +8,7 @@ the 16S amplicon sequencing data. The raw data is from Illumina MiSeq and the ru
 
 * NEXTFLEX® 16S V1 - V3 rRNA Amplicon-Seq Library Prep Kit
 This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-nova-4202-02s#product-overview) is designed for the preparation of multiplexed amplicon libraries that span the hypervariable domains one through three (V1-V3) of microbial 16S ribosomal RNA (rRNA) genes. These libraries are compatible with paired-end sequencing on the Illumina® sequencing platforms.
-* Sequencer Used Illumina MiSeq 
+* Sequencer Used Illumina MiSeq at Cambridge Genomic Services (Pathology).
 
 ### 16S Database Used
 
@@ -52,12 +52,14 @@ The full codebase in R/BioConductor and source data are in the markdown provided
 ### Nanopore Details
 
 * Sequencer - PromethION P24 - Cambridge Genomic Services (Pathology).
-* Run Time  - 120 hours
-* Adaptive Sampling - Deplete for Human Genes
+* Run Time  - 120 hours (both runs)
+* Run 1 - Adaptive Sampling - Deplete for Human Genes
+* Run 2 - No Adaptive Sampling - for comparison
 
-|Flow cell type | Flow cell ID | Kit Used |
-|---------------|--------------|----------|
-|FLO-PRO114M    | PAU22393 | SQK-NBD114-24|
+|Run  |Flow cell type | Flow cell ID | Kit Used |
+|-----|---------------|--------------|----------|
+|Run 1| FLO-PRO114M   | PAU22393  |SQK-NBD114-24|
+|Run 2| FLO-PRO114M   | PAS76652  |SQK-NBD114-24|
 
 
 ### Dorado Basecalling Model Used
