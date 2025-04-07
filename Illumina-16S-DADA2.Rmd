@@ -1,0 +1,234 @@
+---
+title: "Part II Project - Illumina Analysis"
+author: "Dalia Bornstein"
+date: "2024-11-21"
+output:
+  github_document:
+    toc: true
+    fig_width: 8
+    fig_height: 8
+  pdf_document:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Load Libraries
+```{r message=FALSE}
+library(RColorBrewer); packageVersion("RColorBrewer")
+library(dada2); packageVersion("dada2")
+library(kableExtra) ; packageVersion("kableExtra")
+```
+
+```{r}
+path <- "rawReads_16s"
+list.files(path)
+```
+
+# List Names in Functional Way
+```{r}
+# Forward and reverse fastq filenames have format
+
+fnFs <- sort(list.files(path, pattern="_R1.fastq.gz", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern="_R2.fastq.gz", full.names = TRUE))
+
+# Extract sample names, assuming filenames have format
+
+sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+```
+
+# Plot Quality Profiles
+
+## Forward
+```{r fig.width=10,fig.height=7,dpi=300}
+plotQualityProfile(fnFs)
+```
+
+## Reverse
+
+Look at quality for the second read of each pair in the aggregate.
+```{r fig.width=10,fig.height=7,dpi=300}
+plotQualityProfile(fnRs)
+```
+
+
+# Filter and Trim
+
+We want to filter out reads that look bad already and to filter reads that are too short etc. Additionally we will trim the left read at 221nt and the right at 141nt to remove the most error-prone regions. We will remove PhiX contamination at the same time.
+
+```{r}
+# Place filtered files in filtered/ subdirectory
+filtFs <- file.path(path, "filtered", paste0(sample.names, "_F_filt.fastq.gz"))
+filtRs <- file.path(path, "filtered", paste0(sample.names, "_R_filt.fastq.gz"))
+names(filtFs) <- sample.names
+names(filtRs) <- sample.names
+
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(221,141),
+              maxN=0, truncQ=2, rm.phix=TRUE,
+              compress=TRUE, multithread=TRUE) 
+```
+
+```{r}
+kable(out)
+```
+# Learn Error Rates
+
+Statistical modelling of error rates from a sample subset. Should be then applied over all datasets.
+```{r}
+errF <- learnErrors(filtFs, multithread=TRUE)
+errR <- learnErrors(filtRs, multithread=TRUE)
+```
+
+# Plot Error Rates
+
+Look at the different types of errors that occur against our model of Illumina Error Rates.
+```{r fig.width=10,fig.height=7}
+plotErrors(errF, nominalQ=TRUE)
+```
+
+# Sample Inference
+
+We aim to identify ASVs (Amplicon Sequence Variants from our data). This is a unique DNA sequence that is generated from a targeted amplification of specific regions in a microbial genome. These tend to be a better surrogate of microbial abundance than an OTU (Operational Taxonomic Unit). This is DADA2s standard and best approach.
+
+Forward Reads first.
+```{r}
+dadaFs <- dada(filtFs, err=errF, multithread=TRUE,pool=FALSE)
+```
+
+Now Reverse Reads (2nd of Pair).
+```{r}
+dadaRs <- dada(filtRs, err=errR, multithread=TRUE,pool=FALSE)
+```
+## Results of Denoising
+```{r}
+dadaFs[[1]]
+```
+
+
+# Merge and Construct Table
+
+Lets merge our forward and reverse reads into a single amplicon sequence construct. This is done by concatenation as our reads do not overlap.
+We will pad the space with an appropriate number of N nucleotides. This causes some issue later for species assignment that we will deal with.
+
+```{r}
+mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE,justConcatenate=TRUE)
+mergers2 <- mergers
+ 
+# Repad to 28nt of Ns for an insert of 490ish
+for (i in 1:length(names(mergers))){
+  #  print(names(mergers)[i])
+  mergers2[[i]]$sequence=gsub("NNNNNNNNNN","NNNNNNNNNNNNNNNNNNNNNNNNNNNN",mergers[[i]]$sequence)
+}
+ 
+seqtab <- makeSequenceTable(mergers2)
+dim(seqtab)
+table(nchar(getSequences(seqtab)))
+```
+
+
+# Remove Chimeras
+
+Identify and remove PCR Chimeras. These are separate fragments that somehow form a chimeric pair during PCR.
+This is usually when an aborted PCR fragment forms a primer for another sequence.
+```{r}
+seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
+dim(seqtab.nochim)
+```
+
+## Fraction of Chimeric Reads per sample
+
+Lets compute how many chimeras we actually had per sample.
+```{r}
+1-sum(seqtab.nochim)/sum(seqtab)
+```
+
+
+# Track Reads through Pipeline
+```{r}
+getN <- function(x) sum(getUniques(x))
+track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim))
+# If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
+colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+rownames(track) <- sample.names
+knitr::kable(track,caption = "Sample Filtering Table")
+
+colours=brewer.pal(n = 10, name = "Set3")
+barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
+
+colours=brewer.pal(n = 6, name = "Set1")
+names(colours)=c("input","filtered","denoisedF","denoisedR","merged","nonchim")
+barplot(t(track),beside=TRUE,las=2,cex.axis=0.5,cex.names=0.5,col=colours,main="Read Level Filtering")
+legend("bottomright",names(colours),fill=colours,cex=0.4)
+```
+
+# Taxonomic Assignment (SILVA)
+
+We use version 132 of the SILVA 16s rRNA database for bacteria to assign. We use the training set for standard assignment and a separate species level file for species level assignment where possible.
+```{r}
+# Assign Taxonomy
+silva_train=paste0("./silva_nr_v132_train_set.fa")
+silva_species=paste0("./silva_species_assignment_v132.fa")
+ 
+taxa <- assignTaxonomy(seqtab.nochim, silva_train, multithread=TRUE,verbose=TRUE)
+```
+
+## Wrangling Species Calls
+
+We have 'N's in our sequences, so we cant just ask for species calls as DADA2 doesn't like Ns. Instead we will make two new taxa objects.
+taxa2 will remove all the N's and everything to the right of the junction and try and assign species using only the left-most sequence.
+taxa3 will remove all the N's and everything to the left of the junction and try and assign species using only the right-most sequence.
+Between the left and right side analysis we should be able to get at least some species level calls for our dataset.
+```{r}
+taxa2 <- taxa
+rownames(taxa2)=gsub("NNNNNNNNNN.*$","",rownames(taxa2))
+taxa2 <- addSpecies(taxa2, silva_species,verbose=TRUE)
+ 
+taxa3 <- taxa
+rownames(taxa3)=gsub("^.*NNNNNNNNNN","",rownames(taxa3))
+taxa3 <- addSpecies(taxa3, silva_species,verbose=TRUE)
+```
+
+We now will make a new species column in our original taxa object to add this species data to, we'll first populate it with the species calls from taxa2.
+```{r}
+if (ncol(taxa)==6){
+taxa=cbind(taxa,taxa2[,7])
+colnames(taxa)[7]="Species"
+taxa[,7]=NA;
+}
+```
+
+## Merge Species Back to taxa
+
+Now we will add the extra species data from taxa3. Once done we should have everything we need in the taxa object and no longer need taxa2 and taxa3.
+```{r}
+for (i in 1:nrow(taxa)){
+ if ((!is.na(taxa2[i,7])) && (!is.na(taxa3[i,7]))){
+  taxa[i,7]=taxa2[i,7]
+ } else {
+   if (!is.na(taxa2[i,7])){
+    taxa[i,7]=taxa2[i,7]
+   }
+   if (!is.na(taxa3[i,7])){
+    taxa[i,7]=taxa3[i,7]
+   }
+ }
+}
+```
+
+# Save Taxonomic Objects
+
+We can load these in the next analysis script as needed.
+```{r}
+saveRDS(seqtab.nochim,file="seqtab.rds")
+saveRDS(taxa,file="taxa.rds")
+saveRDS(taxa2,file="taxa2.rds")
+saveRDS(taxa3,file="taxa3.rds")
+```
+
+
+
+
