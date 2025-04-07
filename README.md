@@ -223,17 +223,17 @@ These track files are:
 |`data_skew.txt`          | histogram | GC skew                |
 
 #### Command Line
-This perl script computes the key track files:
+This perl script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl) computes the key track files:
 
 ```
 ./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf metagenome.conf
 ```
+This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (Vanderbilt Center for Quantitative Sciences).
+
 
 This creates a *png* and an *svg* vector graphic for each species of interest.
 
-All species are run with a simple shell script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl):
-This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (Vanderbilt Center for Quantitative Sciences).
-
+All species are run with a simple shell script:
 ```
 #!/bin/sh
 ./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf circos.conf; cp circos.svg akkermansia.svg; open circos.png
