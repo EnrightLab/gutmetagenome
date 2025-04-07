@@ -10,21 +10,6 @@ the 16S amplicon sequencing data. The raw data is from Illumina MiSeq and the ru
 This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-nova-4202-02s#product-overview) is designed for the preparation of multiplexed amplicon libraries that span the hypervariable domains one through three (V1-V3) of microbial 16S ribosomal RNA (rRNA) genes. These libraries are compatible with paired-end sequencing on the Illumina® sequencing platforms.
 * Sequencer Used Illumina MiSeq 
 
-### Packages Used
-
-|package | version | type         |
-|--------|---------|--------------|
-|dada2   | 1.34.0  | bioconductor |
-|phyloseq| 1.50.0  | bioconductor |
-|microbiome| 1.28.0 | bioconductor |
-|microViz | 0.12.6 | bioconductor |
-|RColorBrewer|1.1.3|bioconductor |
-|kableExtra|1.4.0|Cran|
-|Biostrings|2.74.1|bioconductor|
-|ggplot2|3.5.1|Cran|
-|dplyr|1.1.4|Cran|
-|gdata|3.0.1|Cran|
-
 ### 16S Database Used
 
 We used the [SILVA database](https://benjjneb.github.io/dada2/training.html).
@@ -41,13 +26,28 @@ We used the [SILVA database](https://benjjneb.github.io/dada2/training.html).
 * `compress=TRUE` - Compress the output (gz)
 * `multithread=TRUE` - Use maximum available CPUs
 
+### R Packages Used
+
+|package | version | type         |
+|--------|---------|--------------|
+|dada2   | 1.34.0  | bioconductor |
+|phyloseq| 1.50.0  | bioconductor |
+|microbiome| 1.28.0 | bioconductor |
+|microViz | 0.12.6 | bioconductor |
+|RColorBrewer|1.1.3|bioconductor |
+|kableExtra|1.4.0|Cran|
+|Biostrings|2.74.1|bioconductor|
+|ggplot2|3.5.1|Cran|
+|dplyr|1.1.4|Cran|
+|gdata|3.0.1|Cran|
+
 ### Illumina 16S Analysis R/BioConductor Code
 
-The full codebase in R/BioConductor and source data are given.
+The full codebase in R/BioConductor and source data are in the markdown provided.
 
 * [Illumina-16S-DADA2.md](Illumina-16S-DADA2.md)
 
-#### Nanopore Metagenomics
+## Nanopore Metagenomics
 
 ### Nanopore Details
 
@@ -75,7 +75,7 @@ The full codebase in R/BioConductor and source data are given.
 |Dorado  | 7.4.13 | 
 |MinKNOW | Core 6.0.11 |
 
-## Metagenomic Mapping Tools Used
+### Metagenomic Mapping Tools Used
 
 -   Kraken version 2.1.3
 -   Bracken v2.9
