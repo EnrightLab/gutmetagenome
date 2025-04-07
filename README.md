@@ -16,8 +16,14 @@ This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-no
 |--------|---------|--------------|
 |dada2   | 1.34.0  | bioconductor |
 |phyloseq| 1.50.0  | bioconductor |
-|microbiome| 1.22.0 | bioconductor |
+|microbiome| 1.28.0 | bioconductor |
 |microViz | 0.12.6 | bioconductor |
+|RColorBrewer|1.1.3|bioconductor |
+|kableExtra|1.4.0|Cran|
+|Biostrings|2.74.1|bioconductor|
+|ggplot2|3.5.1|Cran|
+|dplyr|1.1.4|Cran|
+|gdata|3.0.1|Cran|
 
 ### 16S Database Used
 
@@ -34,6 +40,12 @@ We used the [SILVA database](https://benjjneb.github.io/dada2/training.html).
 * `rm.phix=TRUE` - Remove reads which are PhiX contaminants
 * `compress=TRUE` - Compress the output (gz)
 * `multithread=TRUE` - Use maximum available CPUs
+
+### Illumina 16S Analysis R/BioConductor Code
+
+The full codebase in R/BioConductor and source data are given.
+
+* [Illumina-16S-DADA2.md](Illumina-16S-DADA2.md)
 
 #### Nanopore Metagenomics
 
