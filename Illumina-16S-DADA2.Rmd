@@ -39,7 +39,10 @@ fnRs <- sort(list.files(path, pattern="_R2.fastq.gz", full.names = TRUE))
 # Extract sample names, assuming filenames have format
 
 sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+
+kable(sample.names,label = "Sample Names")
 ```
+
 
 # Plot Quality Profiles
 
@@ -112,7 +115,8 @@ dadaFs[[1]]
 # Merge and Construct Table
 
 Lets merge our forward and reverse reads into a single amplicon sequence construct. This is done by concatenation as our reads do not overlap.
-We will pad the space with an appropriate number of N nucleotides. This causes some issue later for species assignment that we will deal with.
+
+We will pad the space with an appropriate number of `N` nucleotides. This causes some issue later for species assignment that we will deal with.
 
 ```{r}
 mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE,justConcatenate=TRUE)
@@ -133,6 +137,7 @@ table(nchar(getSequences(seqtab)))
 # Remove Chimeras
 
 Identify and remove PCR Chimeras. These are separate fragments that somehow form a chimeric pair during PCR.
+
 This is usually when an aborted PCR fragment forms a primer for another sequence.
 ```{r}
 seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)

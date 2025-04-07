@@ -6,6 +6,11 @@ This is a Github supporting Dalia's Part II Project which contains computational
 
 
 ### Illumina 16S Amplicon Analysis
+This section describes the analysis framework (mostly in R/Bioconductor) for processing and analysing
+the 16S amplicon sequencing data. The raw data is from Illumina MiSeq and the runs were Paired-end 250nt.
+
+* NEXTFLEX® 16S V1 - V3 rRNA Amplicon-Seq Library Prep Kit
+This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-nova-4202-02s#product-overview) is designed for the preparation of multiplexed amplicon libraries that span the hypervariable domains one through three (V1-V3) of microbial 16S ribosomal RNA (rRNA) genes. These libraries are compatible with paired-end sequencing on the Illumina® sequencing platforms.
 
 #### Packages Used
 
