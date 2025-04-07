@@ -86,7 +86,9 @@ The full codebase in R/BioConductor and source data are in the markdown provided
 
 These were the command-lines used for analysis where `X` represents the barcode being analysed.
 
-`kraken2 --use-names --threads 4 --confidence 0.5 --db kraken_db --report barcodeX.krakenreport.txt --gzip-compressed barcodeX.fastq.gz > barcodeX.kraken2.txt`
+```
+kraken2 --use-names --threads 4 --confidence 0.5 --db kraken_db --report barcodeX.krakenreport.txt --gzip-compressed barcodeX.fastq.gz > barcodeX.kraken2.txt
+```
 
 * `--use-names` (Print scientific names instead of just taxids)
 * `--threads 4` (Use 4 cpus per job)
@@ -136,8 +138,8 @@ This uses 5 threads and generates a html report (barcodeX.html) from the input r
 
 * Circos Version Used: `circos 0.69-9`
 
-For genomes of interest we download a reference in *Genbank* format, e.g. `Akkermansia.gb` is the Genbank entry (CP001071.1) for Akkermansia sp.
-We then use a perl script [find_species_hits.pl](scripts/find_species_hits.pl)to interrogate all kraken mapping files to identify reads hitting the species of interest.
+For genomes of interest we download a reference in *Genbank* format, e.g. `Akkermansia.gb` is the Genbank entry (CP001071.1) for *Akkermansia sp*.
+We then use a perl script [find_species_hits.pl](scripts/find_species_hits.pl) to interrogate all kraken mapping files to identify reads hitting the species of interest.
 These reads are extracted into a new *FASTA* file. We also extract a genome *FASTA* file from the same genbank file.
 
 To identify per genome mappings we use *blastn* to map the reads against the reference genome *FASTA*.
