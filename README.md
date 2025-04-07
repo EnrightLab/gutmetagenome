@@ -122,7 +122,17 @@ This database had a *k-mer* size of 35.
 # Min clear hash value = 0
 ```
 
-## Circos Plots
+## Metagenome Visualisation
+
+### Krona Plots
+Individual Bracken report files (or Kraken report files) can be turned into a Krona HTML visualisation.
+For this we use the following command from `KronaTools v2.8.1`:
+
+`ktImportTaxonomy -t 5 -m 3 -o barcodeX.html barcodeX.bracken.report.txt`
+
+This uses 5 threads and generates a html report (barcodeX.html) from the input report.
+
+### Circos Plots
 
 * Circos Version Used: `circos 0.69-9`
 
