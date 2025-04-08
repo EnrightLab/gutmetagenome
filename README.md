@@ -12,14 +12,10 @@ the 16S amplicon sequencing data. The raw data is from Illumina MiSeq and the ru
 This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-nova-4202-02s#product-overview) is designed for the preparation of multiplexed amplicon libraries that span the hypervariable domains one through three (V1-V3) of microbial 16S ribosomal RNA (rRNA) genes. These libraries are compatible with paired-end sequencing on the Illumina® sequencing platforms.
 * Sequencer Used Illumina MiSeq at Cambridge Genomic Services (Pathology).
 
-### 16S Database Used
-
-We used the [SILVA database](https://benjjneb.github.io/dada2/training.html)[^1].
-
-* Training Database - SILVA non-redundant version v132 `silva_nr_v132_train_set.fa`
-* Species Database - SILVA species assignment v132 `silva_species_assignment_v132.fa`
-
 ### DADA2 Filtering Options 
+
+*DaDa2*[^1] was used to process the raw illumina sequencing data in order to detect amplicon sequence variants (ASVs) and to compare them to a reference databases.
+The key options used are below but also available in the Rmarkdown (below). Additonal analysis of ASVs across taxa are performed using *phyloseq*[^3].
 
 * `truncLen=c(221,141)` - Filter forward reads by removing 29nt and 110nt from the reverse
 * `maxN=0` - Maximum number of 'N' bases before filtering
@@ -27,6 +23,13 @@ We used the [SILVA database](https://benjjneb.github.io/dada2/training.html)[^1]
 * `rm.phix=TRUE` - Remove reads which are PhiX contaminants
 * `compress=TRUE` - Compress the output (gz)
 * `multithread=TRUE` - Use maximum available CPUs
+
+### 16S Database Used
+
+We used the [SILVA database](https://benjjneb.github.io/dada2/training.html)[^2].
+
+* Training Database - SILVA non-redundant version v132 `silva_nr_v132_train_set.fa`
+* Species Database - SILVA species assignment v132 `silva_species_assignment_v132.fa`
 
 ### R Packages Used
 
@@ -84,8 +87,8 @@ The full codebase in R/BioConductor and source data are in the [markdown provide
 
 ### Metagenomic Mapping Tools Used
 
--   Kraken version 2.1.3
--   Bracken v2.9
+-   Kraken version 2.1.3[^4].
+-   Bracken v2.9[^5].
 
 ### Metagenomic Mapping Options
 
@@ -137,7 +140,7 @@ This database had a *k-mer* size of 35.
 ## Metagenome Visualisation
 
 ### Krona Plots
-Individual Bracken report files (or Kraken report files) can be turned into a Krona HTML visualisation.
+Individual Bracken report files (or Kraken report files) can be turned into a *Krona*[^6] HTML visualisation.
 For this we use the following command from `KronaTools v2.8.1`:
 
 ```
@@ -148,13 +151,13 @@ This uses 5 threads and generates a html report (barcodeX.html) from the input r
 
 ### Circos Plots
 
-* Circos Version Used: `circos 0.69-9`
+* Circos Version Used: `circos 0.69-9`[^7].
 
 For genomes of interest we download a reference in *Genbank* format, e.g. `Akkermansia.gb` is the Genbank entry (CP001071.1) for *Akkermansia sp*.
 We then use a perl script [find_species_hits.pl](scripts/find_species_hits.pl) to interrogate all kraken mapping files to identify reads hitting the species of interest.
 These reads are extracted into a new *FASTA* file. We also extract a genome *FASTA* file from the same genbank file.
 
-To identify per genome mappings we use *blastn* to map the reads against the reference genome *FASTA*.
+To identify per genome mappings we use *blastn*[^8] to map the reads against the reference genome *FASTA*.
 
 * `blast 2.16.0, build Jun 25 2024 12:36:54`
 
@@ -404,12 +407,11 @@ data_out_of_range* = trim
 
 ## Citations
 
-[^1]:Quast C, Pruesse E, Yilmaz P, Gerken J, Schweer T, Yarza P, Peplies J, Glöckner FO. The SILVA ribosomal RNA gene database project: improved data processing and web-based tools. Nucleic Acids Res. 2013
-
-Lu J, Rincon N, Wood DE, Breitwieser FP, Pockrandt C, Langmead B, Salzberg SL, Steinegger M. Metagenome analysis using the Kraken software suite. Nat Protoc. 2022 Dec;17(12):2815-2839. doi: 10.1038/s41596-022-00738-y. Epub 2022 Sep 28. Erratum in: Nat Protoc. 2024 Aug 29. doi: 10.1038/s41596-024-01064-1. PMID: 36171387; PMCID: PMC9725748.
-
-Jennifer Lu, Florian P Breitwieser, Peter Thielen, Steven L Salzberg. Bracken: Estimating species abundance in metagenomics data. bioRxiv 2016 051813; doi: https://doi.org/10.1101/051813
-
-Callahan BJ, McMurdie PJ, Rosen MJ, Han AW, Johnson AJ, Holmes SP. DADA2: High-resolution sample inference from Illumina amplicon data. Nat Methods. 2016 Jul;13(7):581-3. doi: 10.1038/nmeth.3869.
-
-Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J.,  Basic local alignment search tool. Journal of Molecular Biology, 215(3) 1990 , pp.403-410.
+[^1]:Callahan BJ, McMurdie PJ, Rosen MJ, Han AW, Johnson AJ, Holmes SP. DADA2: High-resolution sample inference from Illumina amplicon data. Nat Methods. 2016 Jul;13(7):581-3. doi: 10.1038/nmeth.3869.
+[^2]:Quast C, Pruesse E, Yilmaz P, Gerken J, Schweer T, Yarza P, Peplies J, Glöckner FO. The SILVA ribosomal RNA gene database project: improved data processing and web-based tools. Nucleic Acids Res. 2013.
+[^3]:McMurdie and Holmes (2013) phyloseq: An R Package for Reproducible Interactive Analysis and Graphics of Microbiome Census Data. PLoS ONE. 8(4):e61217.
+[^4]:Lu J, Rincon N, Wood DE, Breitwieser FP, Pockrandt C, Langmead B, Salzberg SL, Steinegger M. Metagenome analysis using the Kraken software suite. Nat Protoc. 2022 Dec;17(12):2815-2839. doi: 10.1038/s41596-022-00738-y. Epub 2022 Sep 28. Erratum in: Nat Protoc. 2024 Aug 29. doi: 10.1038/s41596-024-01064-1. PMID: 36171387; PMCID: PMC9725748.
+[^5]:Jennifer Lu, Florian P Breitwieser, Peter Thielen, Steven L Salzberg. Bracken: Estimating species abundance in metagenomics data. bioRxiv 2016 051813; doi: https://doi.org/10.1101/051813.
+[^6]:Ondov, B.D., Bergman, N.H. & Phillippy, A.M. Interactive metagenomic visualization in a Web browser. BMC Bioinformatics 12, 385 (2011). https://doi.org/10.1186/1471-2105-12-385.
+[^7]:Krzywinski, M. et al. Circos: an Information Aesthetic for Comparative Genomics. Genome Res (2009) 19:1639-1645.
+[^8]:Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J.,  Basic local alignment search tool. Journal of Molecular Biology, 215(3) 1990 , pp.403-410.
