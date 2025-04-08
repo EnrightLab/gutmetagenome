@@ -233,6 +233,7 @@ CP001071.1      120000  -0.04795584
 CP001071.1      140000  -0.08262656
 CP001071.1      160000  -0.09920739
 CP001071.1      180000  -0.06964381
+...
 ```
 
 ### Genome Annotation and Coverage
@@ -255,6 +256,47 @@ These track files are:
 |`karyotype.txt`          | karyotype | visual karyotype       |
 |`data_tile.txt`          | histogram | coverage of nanopore   |
 |`data_skew.txt`          | histogram | GC skew                |
+
+#### Example labels_forward track
+```
+chr1    1       234     mobA
+chr1    608     2142    rRNA 16S
+chr1    5589    5703    rRNA
+chr1    7442    9463    uvrB
+chr1    12165   12572   iscU
+chr1    12578   12901   iscA
+chr1    12915   13409   hscB
+chr1    13500   15386   hscA
+chr1    15428   15760   fdx
+...
+```
+#### Example data_tile track
+```
+chr1    0       999     0.275594405594406
+chr1    1000    1999    0.41734965034965
+chr1    2000    2999    0.646265734265734
+chr1    3000    3999    0.727986013986014
+chr1    4000    4999    0.677216783216783
+chr1    5000    5999    0.655524475524475
+chr1    6000    6999    0.655258741258741
+...
+```
+
+#### Example highlight_forward track
+```
+chr1    608     2142    fill_color=30,30,30
+chr1    2228    2304    fill_color=30,30,30
+chr1    2597    5477    fill_color=30,30,30
+chr1    5589    5703    fill_color=30,30,30
+chr1    7442    9463    fill_color=94,252,130
+chr1    9585    10124   fill_color=30,30,30
+chr1    10343   10828   fill_color=30,30,30
+chr1    10865   12076   fill_color=30,30,30
+chr1    12165   12572   fill_color=142,173,119
+chr1    12578   12901   fill_color=102,122,106
+chr1    12915   13409   fill_color=189,151,146
+...
+```
 
 #### Command Line
 This perl script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl) computes the key track files:
