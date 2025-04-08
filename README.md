@@ -14,7 +14,11 @@ This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-no
 
 ### 16S Database Used
 
+<<<<<<< HEAD
 We used the [SILVA database](https://benjjneb.github.io/dada2/training.html)[^1].
+=======
+We used the [SILVA database](https://benjjneb.github.io/dada2/training.html) ^[1].
+>>>>>>> 1e209daf2bd5c23daa2832f1667f89f3b3784cfa
 
 * Training Database - SILVA non-redundant version v132 `silva_nr_v132_train_set.fa`
 * Species Database - SILVA species assignment v132 `silva_species_assignment_v132.fa`
