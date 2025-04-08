@@ -241,6 +241,7 @@ This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (V
 
 
 This creates a *png* and an *svg* vector graphic for each species of interest. The *Circos* plots are available [circos_plots](cicos/).
+![half-size image](circos/akkermansia.png){#id .class width=50% height=50%}
 
 All species are run with a simple shell script:
 ```
