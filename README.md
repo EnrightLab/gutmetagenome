@@ -153,6 +153,9 @@ ktImportTaxonomy -t 5 -m 3 -o barcodeX.html barcodeX.bracken.report.txt
 This uses 5 threads and generates a html report (barcodeX.html) from the input report.
 
 The multi-sample plot of *bracken* abundances from *Krona* is here [dalia-krona.html](krona/dalia-krona.html)
+An example image from *sample 1* is below:
+![krona](krona/krona.png)
+
 
 ### Circos Plots
 
