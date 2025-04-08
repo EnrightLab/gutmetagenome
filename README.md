@@ -172,8 +172,8 @@ To identify per genome mappings we use *blastn*[^8] to map the reads against the
 ### Genbank References Used
 The genbank reference data use is in the folder provided [here](circos/genbank).
 
-|Species (and strain)|Genbank Accession|Size|Type|Date|
-|--------------------|-----------------|----|----|----|
+|Species (and strain)|Genbank Accession|Size|Type|Origin|Date|
+|--------------------|-----------------|----|----|----|------|
 |Akkermansia muciniphila ATCC BAA-835|[CP001071](circos/genbank/akkermansia.gb)|2664102 bp|DNA circular|BCT|16-AUG-2022|
 |Candida parapsilosis strain CDC317 Chr 1|[NW_023503284](circos/genbank/candida.gb)|957321 bp|DNA linear|CON|28-OCT-2020|
 |Candida parapsilosis strain CDC317 Chr 2|[NW_023503283](circos/genbank/candida.gb)|1789679 bp|DNA linear|CON|28-OCT-2020|
