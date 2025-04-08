@@ -250,7 +250,7 @@ This creates a *png* and an *svg* vector graphic for each species of interest. T
 ![suterella](circos/suterella.png)
 
 
-All species are run with a simple shell script:
+All species were run with the following simple shell script:
 ```
 #!/bin/sh
 ./make_karyotype_gb.pl akkermansia.gb akkermansia.hits akkermansia.skew --names; circos -conf circos.conf; cp circos.svg akkermansia.svg; open circos.png
