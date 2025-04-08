@@ -241,7 +241,14 @@ This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (V
 
 
 This creates a *png* and an *svg* vector graphic for each species of interest. The *Circos* plots are available [circos_plots](cicos/).
-![half-size image](circos/akkermansia.png){#id .class width=50% height=50%}
+![akkermansia](circos/akkermansia.png)
+![candida](circos/candida.png)
+![herelleviridae](circos/herelleviridae.png)
+![methano_smithii](circos/methano_smithii.png)
+![methanomassiliicoccus](circos/methanomassiliicoccus.png)
+![methanosphaera](circos/methanosphaera.png)
+![suterella](circos/suterella.png)
+
 
 All species are run with a simple shell script:
 ```
