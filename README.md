@@ -265,7 +265,7 @@ This perl script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl) computes t
 This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (Vanderbilt Center for Quantitative Sciences).
 
 
-This creates a *png* and an *svg* vector graphic for each species of interest. The *Circos* plots are available [circos_plots](./cicos).
+This creates a *png* and an *svg* vector graphic for each species of interest. The *Circos* plots are available [circos_plots](./circos).
 ![akkermansia](circos/akkermansia.png)
 ![candida](circos/candida.png)
 ![herelleviridae](circos/herelleviridae.png)
