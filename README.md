@@ -15,7 +15,7 @@ This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-no
 ### DADA2 Filtering Options 
 
 *DaDa2*[^1] was used to process the raw illumina sequencing data in order to detect amplicon sequence variants (ASVs) and to compare them to a reference databases.
-The key options used are below but also available in the Rmarkdown (below). Additonal analysis of ASVs across taxa are performed using *phyloseq*[^3].
+The key options used are below but also available in the Rmarkdown (below). Additonal analysis of ASVs across taxa are performed using *phyloseq*[^3]. Again the Rmarkdown code for this is below.
 
 * `truncLen=c(221,141)` - Filter forward reads by removing 29nt and 110nt from the reverse
 * `maxN=0` - Maximum number of 'N' bases before filtering
@@ -26,7 +26,7 @@ The key options used are below but also available in the Rmarkdown (below). Addi
 
 ### 16S Database Used
 
-We used the [SILVA database](https://benjjneb.github.io/dada2/training.html)[^2].
+We used the [SILVA database](https://benjjneb.github.io/dada2/training.html)[^2] as a reference for *DaDa2*.
 
 * Training Database - SILVA non-redundant version v132 `silva_nr_v132_train_set.fa`
 * Species Database - SILVA species assignment v132 `silva_species_assignment_v132.fa`
@@ -87,6 +87,9 @@ The full codebase in R/BioConductor and source data are in the [markdown provide
 
 ### Metagenomic Mapping Tools Used
 
+*Kraken2* was used to employ fast *k-mer* indexing to map metagenome nanopore reads rapidly against the *core_nt* database. It produces *k-mer* counts on taxonomic nodes.
+The *Bracken* tool aims to estimate actual abundance from the raw *Kraken2* counts.
+
 -   Kraken version 2.1.3[^4].
 -   Bracken v2.9[^5].
 
@@ -105,7 +108,7 @@ kraken2 --use-names --threads 4 --confidence 0.5 --db kraken_db --report barcode
 * `--report` (Save text report to this file of read mappings)
 * `--gzip-compressed` (Read query reads from a gzip file, e.g. fastq.gz)
 
-### Bracken Abundance Analysis
+### Bracken Abundance Estimation
 ```
 est_abundance.py -i barcodeX.kraken2.txt -k kraken_db/database75mers.kmer_distrib -l S -t 10 -o barcodeX.bracken.txt
 ```
@@ -148,6 +151,8 @@ ktImportTaxonomy -t 5 -m 3 -o barcodeX.html barcodeX.bracken.report.txt
 ```
 
 This uses 5 threads and generates a html report (barcodeX.html) from the input report.
+
+The multi-sample plot of *bracken* abundances from *Krona* is here [dalia-krona.html](krona/dalia-krona.html)
 
 ### Circos Plots
 
@@ -235,7 +240,7 @@ This perl script [make_karyotype_gb.pl](scripts/make_karyotype_gb.pl) computes t
 This script makes use of [genbank_gtf.pl](scripts/genbank_gtf.pl) by Jiang Li (Vanderbilt Center for Quantitative Sciences).
 
 
-This creates a *png* and an *svg* vector graphic for each species of interest.
+This creates a *png* and an *svg* vector graphic for each species of interest. The *Circos* plots are available [circos_plots](cicos/).
 
 All species are run with a simple shell script:
 ```
