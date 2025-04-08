@@ -172,21 +172,21 @@ To identify per genome mappings we use *blastn*[^8] to map the reads against the
 ### Genbank References Used
 |Species (and strain)|Genbank Accession|Size|Type|Date|
 |--------------------|-----------------|----|----|----|
-|Akkermansia muciniphila ATCC BAA-835|CP001071|2664102 bp|DNA circular|BCT|16-AUG-2022|
-|Candida parapsilosis strain CDC317 Chr 1|NW_023503284|957321 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 2|NW_023503283|1789679 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 3|NW_023503282|962442 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 4|NW_023503281|3023470 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 5|NW_023503280|2091826 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 6|NW_023503279|1039767 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 7|NW_023503278|2235583 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr 8|NW_023503277|898305 bp|DNA linear|CON|28-OCT-2020|
-|Candida parapsilosis strain CDC317 Chr MT|NC_005253|32745 bp|DNA linear|PLN|03-APR-2023|
-|Herelleviridae sp. isolate ctX5e1|BK045609|29362 bp|DNA linear|ENV|24-JUN-2021|
-|Methanobrevibacter smithii ATCC 35061|CP000678|1853160 bp|DNA circular|BCT|31-JAN-2014|
-|Candidatus Methanomassiliicoccus intestinalis isolate 138|LVVS01000017|461488 bp|DNA linear|ENV|12-JUL-2019|
-|Methanosphaera stadtmanae DSM 3091|CP000102|1767403 bp|DNA circular|BCT|31-JAN-2014|
-|Sutterella wadsworthensis strain FDAARGOS_1159|CP068055|3026517 bp|DNA circular|BCT|20-JAN-2021|
+|Akkermansia muciniphila ATCC BAA-835|[CP001071](circos/genbank/akkermansia.gb)|2664102 bp|DNA circular|BCT|16-AUG-2022|
+|Candida parapsilosis strain CDC317 Chr 1|[NW_023503284](circos/genbank/candida.gb)|957321 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 2|[NW_023503283](circos/genbank/candida.gb)|1789679 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 3|[NW_023503282](circos/genbank/candida.gb)|962442 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 4|[NW_023503281](circos/genbank/candida.gb)|3023470 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 5|[NW_023503280](circos/genbank/candida.gb)|2091826 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 6|[NW_023503279](circos/genbank/candida.gb)|1039767 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 7|[NW_023503278](circos/genbank/candida.gb)|2235583 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr 8|[NW_023503277](circos/genbank/candida.gb)|898305 bp|DNA linear|CON|28-OCT-2020|
+|Candida parapsilosis strain CDC317 Chr MT|[NC_005253](circos/genbank/candida.gb)|32745 bp|DNA linear|PLN|03-APR-2023|
+|Herelleviridae sp. isolate ctX5e1|[BK045609](circos/genbank/methano_smithii.gb)|29362 bp|DNA linear|ENV|24-JUN-2021|
+|Methanobrevibacter smithii ATCC 35061|[CP000678](circos/genbank/methanomassiliicoccus.gb)|1853160 bp|DNA circular|BCT|31-JAN-2014|
+|Candidatus Methanomassiliicoccus intestinalis isolate 138|[LVVS01000017](circos/genbank/akkermansia.gb)|461488 bp|DNA linear|ENV|12-JUL-2019|
+|Methanosphaera stadtmanae DSM 3091|[CP000102](circos/genbank/methanosphaera.gb)|1767403 bp|DNA circular|BCT|31-JAN-2014|
+|Sutterella wadsworthensis strain FDAARGOS_1159|[CP068055](circos/genbank/suterella.gb)|3026517 bp|DNA circular|BCT|20-JAN-2021|
 
 
 We build a BLAST database as follows:
