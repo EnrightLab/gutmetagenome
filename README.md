@@ -77,10 +77,11 @@ The full codebase in R/BioConductor and source data are in the [markdown provide
 `GCF_000001405.40_GRCh38.p14_genomic.fna`
 
 ### Software versions Used
+
 |Software | Version |
 |---------|---------|
 |MinKNOW | 24.06.14 |
-|Bream | 8.0.12 | 
+|Bream   | 8.0.12 | 
 |Configuration | 6.0.15 |
 |Dorado  | 7.4.13 | 
 |MinKNOW | Core 6.0.11 |
@@ -152,7 +153,7 @@ ktImportTaxonomy -t 5 -m 3 -o barcodeX.html barcodeX.bracken.report.txt
 
 This uses 5 threads and generates a html report (barcodeX.html) from the input report.
 
-The multi-sample plot of *bracken* abundances from *Krona* is here [dalia-krona.html](krona/dalia-krona.html)
+The multi-sample plot of *bracken* abundances from *Krona* is here [dalia-krona.html](https://enrightlab.github.io/gutmetagenome/krona/dalia-krona.html)
 An example image from *sample 1* is below:
 ![krona](krona/krona.png)
 
