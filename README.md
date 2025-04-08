@@ -14,7 +14,7 @@ This [kit](https://www.revvity.com/gb-en/product/nextflex-16s-v1-v3-12-24-rxn-no
 
 ### 16S Database Used
 
-We used the [SILVA database](https://benjjneb.github.io/dada2/training.html) ^[Quast C, Pruesse E, Yilmaz P, Gerken J, Schweer T, Yarza P, Peplies J, Glöckner FO. The SILVA ribosomal RNA gene database project: improved data processing and web-based tools. Nucleic Acids Res. 2013].
+We used the [SILVA database](https://benjjneb.github.io/dada2/training.html) ^[1].
 
 * Training Database - SILVA non-redundant version v132 `silva_nr_v132_train_set.fa`
 * Species Database - SILVA species assignment v132 `silva_species_assignment_v132.fa`
@@ -399,3 +399,17 @@ r1         = 0.75r
 <<include etc/housekeeping.conf>>
 data_out_of_range* = trim
 ```
+
+---
+
+## Citations
+
+[^1]:Quast C, Pruesse E, Yilmaz P, Gerken J, Schweer T, Yarza P, Peplies J, Glöckner FO. The SILVA ribosomal RNA gene database project: improved data processing and web-based tools. Nucleic Acids Res. 2013
+
+Lu J, Rincon N, Wood DE, Breitwieser FP, Pockrandt C, Langmead B, Salzberg SL, Steinegger M. Metagenome analysis using the Kraken software suite. Nat Protoc. 2022 Dec;17(12):2815-2839. doi: 10.1038/s41596-022-00738-y. Epub 2022 Sep 28. Erratum in: Nat Protoc. 2024 Aug 29. doi: 10.1038/s41596-024-01064-1. PMID: 36171387; PMCID: PMC9725748.
+
+Jennifer Lu, Florian P Breitwieser, Peter Thielen, Steven L Salzberg. Bracken: Estimating species abundance in metagenomics data. bioRxiv 2016 051813; doi: https://doi.org/10.1101/051813
+
+Callahan BJ, McMurdie PJ, Rosen MJ, Han AW, Johnson AJ, Holmes SP. DADA2: High-resolution sample inference from Illumina amplicon data. Nat Methods. 2016 Jul;13(7):581-3. doi: 10.1038/nmeth.3869.
+
+Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and Lipman, D.J.,  Basic local alignment search tool. Journal of Molecular Biology, 215(3) 1990 , pp.403-410.
