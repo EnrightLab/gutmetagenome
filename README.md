@@ -170,6 +170,8 @@ To identify per genome mappings we use *blastn*[^8] to map the reads against the
 * `blast 2.16.0, build Jun 25 2024 12:36:54`
 
 ### Genbank References Used
+The genbank reference data use is in the folder provided [here](circos/genbank).
+
 |Species (and strain)|Genbank Accession|Size|Type|Date|
 |--------------------|-----------------|----|----|----|
 |Akkermansia muciniphila ATCC BAA-835|[CP001071](circos/genbank/akkermansia.gb)|2664102 bp|DNA circular|BCT|16-AUG-2022|
