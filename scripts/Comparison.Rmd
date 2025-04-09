@@ -1,0 +1,222 @@
+---
+title: "Nanopore vs Illumina Comparison"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(RColorBrewer)
+library(reshape2)
+library(dplyr)
+library(RColorBrewer)
+library(Rtsne)
+library(gtools)
+library(Polychrome)
+library(gplots)
+library(tidyverse)
+library(reshape2)
+hmcol = colorRampPalette(brewer.pal(9, "GnBu"))(100)
+ylcol = colorRampPalette(brewer.pal(10, "RdYlGn"))(100)
+
+
+# Code to make a plot for an individual PDF
+#pdf("plot1.pdf",paper="a4r")
+#pdf("plot1.pdf",paper="a4")
+#dev.off()
+
+```
+
+## Species Level
+
+Try and plot the differences at the Species Level
+```{r}
+setwd("/Users/daliabornstein/OneDrive/Pre-Clinical Medicine/II Pathology/Project/Plotting Code/")
+par(mfrow=c(2,1))
+data=read.table("table1.txt",header=TRUE,row.names=1,sep="\t")
+data=data[,1:22]
+data=data[mixedsort(rownames(data)),]
+data=data[,order(colSums(data),decreasing=T)]
+
+m1=as.matrix(t(data[grep("nanopore",rownames(data)),]))
+m1=sweep(m1,2,colSums(m1), FUN="/")
+
+m2=as.matrix(t(data[grep("illumina",rownames(data)),]))
+m2=sweep(m2,2,colSums(m2), FUN="/")
+
+m=as.matrix(t(data))
+m=sweep(m,2,colSums(m), FUN="/")
+
+barplot(m,las=2,cex.names=0.5,col=glasbey.colors(32))
+plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
+legend("center",rownames(m),cex=0.4,fill=glasbey.colors(31))
+par(mfrow=c(1,1))
+
+
+pp=rbind(melt(m1),melt(m2))
+pp$group=gsub("sample\\d+_","",pp$Var2)
+pp$sample=gsub("_\\S+","",pp$Var2)
+pp$sample=as.numeric(gsub("sample","",pp$sample))
+
+pal=colorRampPalette(brewer.pal(12, "Set3"))(31)
+names(pal)=sort(rownames(m1))
+
+ggplot(pp, aes(fill= Var1, y = value, x= group, group=sample)) +
+    geom_col(position="stack") +
+    theme_minimal()+
+    theme(axis.text=element_text(size=7), legend.text = element_text(size=5), legend.key.size = unit(0.3, "cm"), axis.text.x=element_text(angle = -90, hjust = 0)) +
+    scale_fill_manual(values = pal)+
+    ylab("") +
+    xlab("") +
+    facet_grid(~sample)
+
+ggplot(pp, aes(fill= Var1, y = value, x= sample, group=group)) +
+    geom_col(position="stack") +
+    theme_minimal()+
+    theme(axis.text=element_text(size=7), legend.text = element_text(size=5), legend.key.size = unit(0.3, "cm"), axis.text.x=element_text(angle = -90, hjust = 0)) +
+    scale_fill_manual(values = pal)+
+    ylab("") +
+    xlab("") +
+    facet_grid(~group)
+```
+
+```{r}
+set.seed(2024)
+tsne <- Rtsne(t(m), perplexity = 6, check_duplicates = FALSE)
+tsne.df <- data.frame(tsne.1 = tsne$Y[,1], tsne.2 = tsne$Y[,2])
+
+samplepal=c(brewer.pal(10, "Set3"),brewer.pal(10, "Set3"))
+names(samplepal)[1:10]=colnames(m1)
+names(samplepal)[11:20]=colnames(m2)
+
+ggplot(data = tsne.df, aes(tsne.1, tsne.2)) + 
+ geom_point(size = 5, pch = 20, colour = samplepal[colnames(m)]) +
+ geom_text(size = 2, vjust=2, aes(label=colnames(m))) +
+ theme_minimal() +
+ ylab("tSNE 1") +
+ xlab("tSNE 2") 
+
+heatmap.2(cor(m1,m2),Colv = F,Rowv=F,trace="none",cexRow = 0.6,cexCol = 0.6,col=ylcol, dendrogram = "none")
+
+library(viridis)
+ggplot(melt(cor(m1,m2)), aes(Var1, Var2, fill= value)) + 
+  geom_tile() +
+  scale_fill_viridis(discrete=FALSE)
+
+library(viridis)
+ggplot(melt(cor(m1,m2)), aes(Var1, Var2, fill= value)) + 
+    geom_tile() +
+    scale_fill_viridis(limits = c(-1, 1))
+
+
+```
+
+
+## Genus Level
+
+Try and plot the differences at the Genus Level
+
+```{r}
+setwd("/Users/daliabornstein/OneDrive/Pre-Clinical Medicine/II Pathology/Project/Plotting Code/")
+par(mfrow=c(2,1))
+data=read.table("table2.txt",header=TRUE,row.names=1,sep="\t")
+data=data[,1:18]
+data=data[mixedsort(rownames(data)),]
+data=data[,order(colSums(data),decreasing=T)]
+
+m1=as.matrix(t(data[grep("nanopore",rownames(data)),]))
+m1=sweep(m1,2,colSums(m1), FUN="/")
+
+m2=as.matrix(t(data[grep("illumina",rownames(data)),]))
+m2=sweep(m2,2,colSums(m2), FUN="/")
+
+m=as.matrix(t(data))
+m=sweep(m,2,colSums(m), FUN="/")
+
+barplot(m,las=2,cex.names=0.5,col=glasbey.colors(32))
+plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = '')
+legend("center",rownames(m),cex=0.4,fill=glasbey.colors(31))
+par(mfrow=c(1,1))
+
+
+pp=rbind(melt(m1),melt(m2))
+pp$group=gsub("sample\\d+_","",pp$Var2)
+pp$sample=gsub("_\\S+","",pp$Var2)
+pp$sample=as.numeric(gsub("sample","",pp$sample))
+
+pal=colorRampPalette(brewer.pal(12, "Set3"))(31)
+names(pal)=sort(rownames(m1))
+
+
+ggplot(pp, aes(fill= Var1, y = value, x= group, group=sample)) +
+    geom_col(position="stack") +
+    theme_minimal()+
+    theme(axis.text=element_text(size=7), legend.text = element_text(size=5), legend.key.size = unit(0.3, "cm"), axis.text.x=element_text(angle = -90, hjust = 0)) +
+    scale_fill_manual(values = pal)+
+    ylab("") +
+    xlab("") +
+    facet_grid(~sample)
+
+
+ggplot(pp, aes(fill= Var1, y = value, x= sample, group=group)) +
+    geom_col(position="stack") +
+    theme_minimal()+
+    theme(axis.text=element_text(size=7), legend.text = element_text(size=5), legend.key.size = unit(0.3, "cm"), axis.text.x=element_text(angle = -90, hjust = 0)) +
+    scale_fill_manual(values = pal)+
+    ylab("") +
+    xlab("") +
+    facet_grid(~group)
+```
+
+
+```{r}
+set.seed(2024)
+tsne <- Rtsne(t(m), perplexity = 6, check_duplicates = FALSE)
+tsne.df <- data.frame(tsne.1 = tsne$Y[,1], tsne.2 = tsne$Y[,2])
+
+samplepal=c(brewer.pal(10, "Set3"),brewer.pal(10, "Set3"))
+names(samplepal)[1:10]=colnames(m1)
+names(samplepal)[11:20]=colnames(m2)
+
+ggplot(data = tsne.df, aes(tsne.1, tsne.2)) + 
+ geom_point(size = 5, pch = 20, colour = samplepal[colnames(m)]) +
+ geom_text(size = 2, vjust=2, aes(label=colnames(m))) +
+ theme_minimal() +
+ ylab("tSNE 1") +
+ xlab("tSNE 2") 
+
+heatmap.2(cor(m1,m2),Colv = F,Rowv=F,trace="none",cexRow = 0.6,cexCol = 0.6,col=ylcol, dendrogram = "none")
+
+library(viridis)
+ggplot(melt(cor(m1,m2)), aes(Var1, Var2, fill= value)) + 
+  geom_tile() +
+  scale_fill_viridis(discrete=FALSE)
+
+library(viridis)
+ggplot(melt(cor(m1,m2)), aes(Var1, Var2, fill= value)) + 
+    geom_tile() +
+    scale_fill_viridis(limits = c(-1, 1))
+```
+
+
+```{r}
+diversity=read.table("shannon_simpson.txt",header=TRUE)
+rownames(diversity)=paste(diversity$run,diversity$sample,sep=":")
+data1=melt(diversity[,c(1,2,3)])
+data2=melt(diversity[,c(1,2,4)])
+ 
+ggplot(data1, aes(x=fct_inorder(sample), y=value)) +
+  geom_point(aes(color=fct_inorder(sample), shape=run),size=10)+
+  scale_shape_manual(values=c(16, 21))+
+  scale_color_brewer(palette = "Set3") +
+  ggtitle("Shannon")
+ 
+ggplot(data2, aes(x=fct_inorder(sample), y=value)) +
+  geom_point(aes(color=fct_inorder(sample), shape=run),size=10)+
+  scale_shape_manual(values=c(16, 21))+
+  scale_color_brewer(palette = "Set3") +
+  ggtitle("Simpson")
+```
