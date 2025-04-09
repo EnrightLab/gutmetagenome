@@ -1,0 +1,69 @@
+---
+title: "Statistical Tests"
+output: html_document
+date: "2025-04-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Load necessary packages
+library(tidyr)
+library(dplyr)
+
+# Read the data
+data <- read.table("shannon_simpson.txt", header = TRUE, sep = "\t")
+
+# View the data
+head(data)
+
+```
+```{r}
+# Pivot wider so each method is a column
+data_wide <- data %>%
+  pivot_wider(names_from = run, values_from = c(Shannon, Simpson))
+
+# View reshaped data
+head(data_wide)
+```
+
+```{r}
+t.test(data_wide$Shannon_nanopore, data_wide$Shannon_illumina, paired = TRUE)
+
+```
+```{r}
+t.test(data_wide$Simpson_nanopore, data_wide$Simpson_illumina, paired = TRUE)
+
+```
+```{r}
+# Calculate differences for Shannon and Simpson
+shannon_diff <- data_wide$Shannon_illumina - data_wide$Shannon_nanopore
+simpson_diff <- data_wide$Simpson_illumina - data_wide$Simpson_nanopore
+
+# Cohen's d for paired samples (mean / sd of differences)
+cohen_d_shannon <- mean(shannon_diff) / sd(shannon_diff)
+cohen_d_simpson <- mean(simpson_diff) / sd(simpson_diff)
+
+cohen_d_shannon
+cohen_d_simpson
+```
+```{r}
+# Load the data
+data <- read.table("adaptive_sampling_comparison.txt", header = TRUE, sep = "\t")
+
+# Convert percentages to numeric (remove % sign and convert to numeric)
+data$`Run.1..adaptive.sampling.` <- as.numeric(sub("%", "", data$`Run.1..adaptive.sampling.`))
+data$`Run.2..no.adaptive.sampling.` <- as.numeric(sub("%", "", data$`Run.2..no.adaptive.sampling.`))
+
+# Perform the paired t-test
+t_test_result <- t.test(data$`Run.1..adaptive.sampling.`, 
+                        data$`Run.2..no.adaptive.sampling.`, 
+                        paired = TRUE)
+
+# Print the results
+print(t_test_result)
+
+```
+
