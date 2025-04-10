@@ -181,6 +181,24 @@ barplot(t(track),beside=TRUE,las=2,cex.axis=0.5,cex.names=0.5,col=colours,main="
 legend("bottomright",names(colours),fill=colours,cex=0.4)
 ```
 
+### PDF Ancillary Plots
+
+Save some of these plots to the pdf folder.
+```{r}
+pdf("pdf/illumina_pie_levels.pdf",paper="a4r")
+colours=brewer.pal(n = 10, name = "Set3")
+barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
+
+sample_list <- sample.names[c(10,4,3,9,8,2,5,6,7,1)]
+pie(track[sample_list,1]/(sum(track[sample_list,1])),labels = paste0(names(track[sample_list,1]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,1])))*100,"%"),cex=0.5,col=colours,main="Raw Illumina Readpairs per Sample")
+ 
+colours=brewer.pal(n = 6, name = "Set1")
+names(colours)=c("input","filtered","denoisedF","denoisedR","merged","nonchim")
+barplot(t(track),beside=TRUE,las=2,cex.axis=0.5,cex.names=0.5,col=colours,main="Read Level Filtering")
+legend("bottomright",names(colours),fill=colours,cex=0.4)
+dev.off()
+```
+
 # Taxonomic Assignment (SILVA)
 
 We use version 132 of the SILVA 16s rRNA database for bacteria to assign. We use the training set for standard assignment and a separate species level file for species level assignment where possible.

@@ -35,6 +35,7 @@ library(gtools); packageVersion("gtools")
 ## Read the Table
 
 Read in [nanopore_counts.txt](tables/nanopore_counts.txt) and make a bar-chart. The first numeric column is unmapped reads, the remaining columns decay from the total number of mapped reads.
+We will reorder the table as the columns are not sorted alphanumerically.
 
 ```{r}
 nanopore_table <- read.table("tables/nanopore_counts.txt",header=TRUE,row.names=1,sep="\t")
@@ -48,6 +49,9 @@ barplot(as.matrix(nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),c(2:11)]),beside=T
 legend("topright",nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),1],fill=rainbow(11))
 ```
 
+## PDF Output
+
+We will save a PDF version of this plot in the pdf folder for simplicity.
 ```{r}
 pdf("pdf/nanopore_tax_levels.pdf",paper="a4r")
 barplot(as.matrix(nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),c(2:11)]),beside=T,col=rainbow(11),las=1,names=c(1:10),ylab="No. of Reads")
