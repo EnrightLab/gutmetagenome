@@ -177,7 +177,7 @@ This database had a *k-mer* size of 35.
 ```
 
 ### R Analysis of metagenomic Data
-Some R scripts are used to process and analyse the nanopore metagenomic data.
+Some R scripts are used to process and analyse the nanopore metagenomic data from bracken and kraken.
 
 You can see these scripts in the [nanopore_count_levels](nanopore_count_levels.md) files.
 
