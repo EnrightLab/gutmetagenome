@@ -182,7 +182,7 @@ Some R scripts are used to process and analyse the nanopore metagenomic data.
 You can see these scripts in the [nanopore_count_levels](nanopore_count_levels.md) files.
 
 An example plot from R showing the number of mapped, unmapped and the different taxonomic levels reached is shown below:
-![nanopore_counts](nanopore_count_levels_files/unamed-chunk-2-1.png)
+![nanopore_counts](nanopore_count_levels_files/unnamed-chunk-2-1.png)
 
 ---
 
