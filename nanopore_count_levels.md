@@ -12,7 +12,7 @@ Dalia Bornstein
 # R Analysis of Nanopore Taxonomic Count Summaryies.
 
 These have been produced from the Kraken Report files using a perl
-script [attached](scripts/read_counts.pl)
+script (see below for details).
 
 ## Load Libraries
 

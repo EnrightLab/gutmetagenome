@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 # R Analysis of Nanopore Taxonomic Count Summaryies.
 
-These have been produced from the Kraken Report files using a perl script [attached](scripts/read_counts.pl)
+These have been produced from the Kraken Report files using a perl script (see below for details).
 
 ## Load Libraries
 
