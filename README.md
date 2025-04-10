@@ -120,6 +120,10 @@ est_abundance.py -i barcodeX.kraken2.txt -k kraken_db/database75mers.kmer_distri
 * `-t 10` (use 10 cpus)
 * `-o barcodeX.bracken.txt` (output abundance information in new report file)
 
+### Metagenomic Tables
+
+The metagenomic tables from kraken and bracken are in the [tables folder](tables/kraken_bracken).
+
 ### Metagenomic Database Used
 
 The metagenomic reference used was the *core_nt* from NCBI. This very large collection, includes of GenBank, RefSeq, TPA and PDB.
