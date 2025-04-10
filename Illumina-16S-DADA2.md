@@ -18,6 +18,7 @@ Dalia Bornstein
   - [Fraction of Chimeric Reads per
     sample](#fraction-of-chimeric-reads-per-sample)
 - [Track Reads through Pipeline](#track-reads-through-pipeline)
+  - [PDF Ancillary Plots](#pdf-ancillary-plots)
 - [Taxonomic Assignment (SILVA)](#taxonomic-assignment-silva)
   - [Wrangling Species Calls](#wrangling-species-calls)
   - [Merge Species Back to taxa](#merge-species-back-to-taxa)
@@ -400,6 +401,28 @@ legend("bottomright",names(colours),fill=colours,cex=0.4)
 
 ![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-16-3.png)<!-- -->
 
+### PDF Ancillary Plots
+
+Save some of these plots to the pdf folder.
+
+``` r
+pdf("pdf/illumina_pie_levels.pdf",paper="a4r")
+colours=brewer.pal(n = 10, name = "Set3")
+barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
+
+sample_list <- sample.names[c(10,4,3,9,8,2,5,6,7,1)]
+pie(track[sample_list,1]/(sum(track[sample_list,1])),labels = paste0(names(track[sample_list,1]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,1])))*100,"%"),cex=0.5,col=colours,main="Raw Illumina Readpairs per Sample")
+ 
+colours=brewer.pal(n = 6, name = "Set1")
+names(colours)=c("input","filtered","denoisedF","denoisedR","merged","nonchim")
+barplot(t(track),beside=TRUE,las=2,cex.axis=0.5,cex.names=0.5,col=colours,main="Read Level Filtering")
+legend("bottomright",names(colours),fill=colours,cex=0.4)
+dev.off()
+```
+
+    ## quartz_off_screen 
+    ##                 2
+
 # Taxonomic Assignment (SILVA)
 
 We use version 132 of the SILVA 16s rRNA database for bacteria to
@@ -434,7 +457,7 @@ taxa2 <- addSpecies(taxa2, silva_species,verbose=TRUE)
 ```
 
     ## 419 out of 4649 were assigned to the species level.
-    ## Of which 361 had genera consistent with the input table.
+    ## Of which 360 had genera consistent with the input table.
 
 ``` r
 taxa3 <- taxa
@@ -544,7 +567,7 @@ barplot(t(table[,2:8]),beside=TRUE,las=2,cex.axis=0.5,cex.names=0.5,col=colours,
 legend("topright",names(colours),fill=colours,cex=0.4)
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ## Process the DNA data also for possible phylogenetics
 
@@ -573,7 +596,7 @@ sample_data(ps)$SampleID <- rownames(sample_data(ps))
 plot_richness(ps, x="SampleID", measures=c("Shannon", "Simpson"), color="SampleID")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ## Ordinate Analysis
 
@@ -584,51 +607,48 @@ ord.nmds.bray <- ordinate(ps.prop, method="NMDS", distance="bray")
 ```
 
     ## Run 0 stress 0.09393564 
-    ## Run 1 stress 0.1510031 
-    ## Run 2 stress 0.1508343 
-    ## Run 3 stress 0.09393543 
+    ## Run 1 stress 0.09393541 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.000289125  max resid 0.0006008935 
+    ## ... Procrustes: rmse 0.0006690087  max resid 0.001368362 
     ## ... Similar to previous best
-    ## Run 4 stress 0.09393547 
-    ## ... Procrustes: rmse 0.0005076209  max resid 0.001022843 
+    ## Run 2 stress 0.1450903 
+    ## Run 3 stress 0.09393558 
+    ## ... Procrustes: rmse 0.0002653232  max resid 0.0005363167 
     ## ... Similar to previous best
-    ## Run 5 stress 0.1859276 
-    ## Run 6 stress 0.09393555 
-    ## ... Procrustes: rmse 0.0005891316  max resid 0.001179757 
+    ## Run 4 stress 0.1859593 
+    ## Run 5 stress 0.09393557 
+    ## ... Procrustes: rmse 0.0006188836  max resid 0.001261297 
     ## ... Similar to previous best
-    ## Run 7 stress 0.1283186 
-    ## Run 8 stress 0.1859593 
-    ## Run 9 stress 0.1859593 
-    ## Run 10 stress 0.09393563 
-    ## ... Procrustes: rmse 0.0007029176  max resid 0.001415882 
+    ## Run 6 stress 0.1283185 
+    ## Run 7 stress 0.1380245 
+    ## Run 8 stress 0.09393561 
+    ## ... Procrustes: rmse 0.0003006361  max resid 0.0006118317 
     ## ... Similar to previous best
-    ## Run 11 stress 0.3332488 
-    ## Run 12 stress 0.0939357 
-    ## ... Procrustes: rmse 0.0007433274  max resid 0.001508434 
+    ## Run 9 stress 0.1509741 
+    ## Run 10 stress 0.1283182 
+    ## Run 11 stress 0.1859593 
+    ## Run 12 stress 0.1283184 
+    ## Run 13 stress 0.1859593 
+    ## Run 14 stress 0.1508339 
+    ## Run 15 stress 0.1859593 
+    ## Run 16 stress 0.09393574 
+    ## ... Procrustes: rmse 0.0004139885  max resid 0.0008366212 
     ## ... Similar to previous best
-    ## Run 13 stress 0.09393538 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.0001816354  max resid 0.0003558444 
+    ## Run 17 stress 0.1859593 
+    ## Run 18 stress 0.2140433 
+    ## Run 19 stress 0.0939358 
+    ## ... Procrustes: rmse 0.0008306941  max resid 0.001694812 
     ## ... Similar to previous best
-    ## Run 14 stress 0.1823432 
-    ## Run 15 stress 0.09393546 
-    ## ... Procrustes: rmse 0.0002942383  max resid 0.000597366 
+    ## Run 20 stress 0.09393561 
+    ## ... Procrustes: rmse 0.0006588423  max resid 0.001340175 
     ## ... Similar to previous best
-    ## Run 16 stress 0.1509799 
-    ## Run 17 stress 0.1380246 
-    ## Run 18 stress 0.09393573 
-    ## ... Procrustes: rmse 0.0006059512  max resid 0.001237719 
-    ## ... Similar to previous best
-    ## Run 19 stress 0.1859593 
-    ## Run 20 stress 0.1509853 
-    ## *** Best solution repeated 3 times
+    ## *** Best solution repeated 7 times
 
 ``` r
 plot_ordination(ps.prop, ord.nmds.bray, color="SampleID", title="Bray NMDS")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 ``` r
 top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
@@ -637,13 +657,13 @@ ps.top20 <- prune_taxa(top20, ps.top20)
 plot_bar(ps.top20, x="SampleID", fill="Family") + facet_wrap(~Subject, scales="free_x")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-27-2.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-28-2.png)<!-- -->
 
 ``` r
 plot_bar(ps.top20, x="SampleID", fill="Genus") + facet_wrap(~Subject, scales="free_x")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-27-3.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-28-3.png)<!-- -->
 
 ## Relative Abundance by Family
 
@@ -655,7 +675,7 @@ plot_bar(ps_filtered, x = "SampleID", fill = "Family") +
   labs(y = "Relative Abundance")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ## Prevalence Analysis by Phyla
 
@@ -675,7 +695,7 @@ geom_hline(yintercept = 0.05, alpha = 0.5, linetype = 2) +
 scale_x_log10() + xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") + facet_wrap(~Phylum) + theme(legend.position="none") + ggtitle("Bacteria Prevalence Phylum")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 \## Prevalence Analysis by Genus
 
 Same again, but now by Genus level. Perhaps too much detail.
@@ -695,7 +715,7 @@ theme(strip.text = element_text(size = rel(0.5))) +
 scale_x_log10() + xlab("Total Abundance") + ylab("Prevalence [Frac. Samples]") + facet_wrap(~Genus) + theme(legend.position="none") + ggtitle("Bacteria Prevalence Genus")
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
 ## Nicer Plots for Diversity and Richness
 
@@ -707,7 +727,7 @@ p = plot_richness(ps, x="Subject", title="Diversity and Richness", color="Subjec
 p + geom_point(size=5, alpha=0.7) + scale_color_manual(values=colour_c)
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
 ## Ordination Plot (PCA like) Bray Curtis Distance
 
@@ -717,7 +737,7 @@ p=plot_ordination(ps, ps.ord, type="samples", label = "Subject", color = "Subjec
 p + geom_point(size=5, alpha=0.7) + scale_color_manual(values=colour_c)
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
 ## Prettier Genus Level Plots
 
@@ -731,7 +751,7 @@ psq %>%
   coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ``` r
 psq %>%
@@ -741,7 +761,7 @@ psq %>%
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-33-2.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-34-2.png)<!-- -->
 
 ## Prettier Genus and Species Plots
 
@@ -751,7 +771,7 @@ psq %>%
   coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
 ``` r
 psq %>%
@@ -761,43 +781,43 @@ psq %>%
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-34-2.png)<!-- -->
-
-``` r
-psq %>%
-  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
-  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
-```
-
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-34-3.png)<!-- -->
-
-``` r
-psq %>%
-  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
-  theme(legend.key.size = unit(0.2, 'cm'),
-        legend.text = element_text(size=5),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
-```
-
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-34-4.png)<!-- -->
-
-``` r
-psq %>%
-  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
-  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
-```
-
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
-
-``` r
-psq %>%
-  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
-  theme(legend.key.size = unit(0.2, 'cm'),
-        legend.text = element_text(size=5),
-        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
-```
-
 ![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-35-2.png)<!-- -->
+
+``` r
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+```
+
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-35-3.png)<!-- -->
+
+``` r
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),
+        legend.text = element_text(size=5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
+```
+
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-35-4.png)<!-- -->
+
+``` r
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  coord_flip() + theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
+```
+
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+``` r
+psq %>%
+  comp_barplot(tax_level = "Species",n_taxa=20,label="Subject") +
+  theme(legend.key.size = unit(0.2, 'cm'),
+        legend.text = element_text(size=5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size=5))
+```
+
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-36-2.png)<!-- -->
 
 ## Iris Plot of Genus Level Ordination
 
@@ -810,7 +830,7 @@ psq %>%
   theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
 
 ## Iris Plot of Species Level Ordination
 
@@ -823,4 +843,4 @@ psq %>%
   theme(legend.key.size = unit(0.2, 'cm'),legend.text = element_text(size=5))
 ```
 
-![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
