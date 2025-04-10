@@ -11,7 +11,7 @@ Dalia Bornstein
 # R Analysis of Nanopore Taxonomic Count Summaryies.
 
 These have been produced from the Kraken Report files using a perl
-script [scripts/read_counts.pl](attached)
+script [attached](scripts/read_counts.pl)
 
 ## Load Libraries
 
@@ -48,7 +48,7 @@ library(gtools); packageVersion("gtools")
 
 ## Read the Table
 
-Read in [tables/nanopore_counts.txt](nanopore_counts.txt) and make a
+Read in [nanopore_counts.txt](tables/nanopore_counts.txt) and make a
 bar-chart. The first numeric column is unmapped reads, the remaining
 columns decay from the total number of mapped reads.
 
@@ -83,3 +83,13 @@ legend("topright",nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),1],fill=rainbow(11
 ```
 
 ![](nanopore_count_levels_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+``` r
+pdf("pdf/nanopore_tax_levels.pdf",paper="a4r")
+barplot(as.matrix(nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),c(2:11)]),beside=T,col=rainbow(11),las=1,names=c(1:10),ylab="No. of Reads")
+legend("topright",nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),1],fill=rainbow(11))
+dev.off()
+```
+
+    ## quartz_off_screen 
+    ##                 2
