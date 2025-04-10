@@ -1,0 +1,52 @@
+---
+title: "Part II Project - Illumina Analysis"
+author: "Dalia Bornstein"
+date: "2024-11-21"
+output:
+  github_document:
+    toc: true
+    fig_width: 8
+    fig_height: 8
+  pdf_document:
+    fig_width: 7
+    fig_height: 6
+    fig_caption: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Load Libraries
+```{r message=FALSE}
+library(RColorBrewer); packageVersion("RColorBrewer")
+library(dada2); packageVersion("dada2")
+library(kableExtra) ; packageVersion("kableExtra")
+library(microbiome); packageVersion("microbiome")
+library(microViz); packageVersion("microViz")
+library(phyloseq); packageVersion("phyloseq")
+library(Biostrings); packageVersion("Biostrings")
+library(ggplot2); packageVersion("ggplot2")
+theme_set(theme_bw()); # Set ggplot theme
+library(dplyr); packageVersion("dplyr")
+library(gdata); packageVersion("gdata")
+```
+
+```{r}
+path <- "rawReads_16s"
+list.files(path)
+```
+
+# List Names in Functional Way
+```{r}
+# Forward and reverse fastq filenames have format
+
+fnFs <- sort(list.files(path, pattern="_R1.fastq.gz", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern="_R2.fastq.gz", full.names = TRUE))
+
+# Extract sample names, assuming filenames have format
+
+sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+
+kable(sample.names,caption = "Sample Names")
+```
