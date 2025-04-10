@@ -123,6 +123,39 @@ est_abundance.py -i barcodeX.kraken2.txt -k kraken_db/database75mers.kmer_distri
 ### Metagenomic Tables
 
 The metagenomic tables from kraken and bracken are in the [tables folder](tables/kraken_bracken).
+Some example output is shown below:
+
+```
+ 49.11	3272876	3272876	U	0	unclassified
+ 50.89	3391970	1039443	R	1	root
+ 34.27	2283844	30236	R1	131567	  cellular organisms
+ 33.81	2253183	292082	D	2	    Bacteria
+ 19.27	1284120	24498	D1	1783272	      Terrabacteria group
+ 14.38	958583	46700	P	1239	        Bacillota
+ 13.42	894704	80116	C	186801	          Clostridia
+  6.62	441032	36705	O	186802	            Eubacteriales
+  5.76	383834	116272	F	216572	              Oscillospiraceae
+  2.64	176082	6	F1	552397	                Oscillospiraceae incertae sedis
+  2.64	176076	173949	S	39492	                  [Eubacterium] siraeum
+  0.02	1471	1471	S1	717961	                    [Eubacterium] siraeum V10Sc8a
+  0.01	656	656	S1	657319	                    [Eubacterium] siraeum 70/3
+  0.85	56760	41265	G	216851	                Faecalibacterium
+  0.18	12135	11856	S	853	                  Faecalibacterium prausnitzii
+  0.00	264	264	S1	718252	                    Faecalibacterium prausnitzii L2-6
+  0.00	15	15	S1	657322	                    Faecalibacterium prausnitzii SL3/3
+  0.05	3267	1885	G1	2646395	                  unclassified Faecalibacterium
+  0.01	630	630	S	2929493	                    Faecalibacterium sp. I3-3-89
+  0.00	330	330	S	2929489	                    Faecalibacterium sp. IP-3-29
+  0.00	144	144	S	2929495	                    Faecalibacterium sp. I4-3-84
+  0.00	140	140	S	2929490	                    Faecalibacterium sp. I2-3-92
+  0.00	68	68	S	3141184	                    Faecalibacterium sp. i21-0019-B1
+  0.00	49	49	S	3141185	                    Faecalibacterium sp. i25-0019-C1
+  0.00	12	12	S	2929494	                    Faecalibacterium sp. I4-1-79
+  0.00	7	7	S	2929491	                    Faecalibacterium sp. HTF-F
+  0.00	1	1	S	2929488	                    Faecalibacterium sp. IP-1-18
+  0.00	1	1	S	2929492	                    Faecalibacterium sp. I3-3-33
+  ...
+  ```
 
 ### Metagenomic Database Used
 
@@ -142,6 +175,14 @@ This database had a *k-mer* size of 35.
 # Table capacity: 62617751405
 # Min clear hash value = 0
 ```
+
+### R Analysis of metagenomic Data
+Some R scripts are used to process and analyse the nanopore metagenomic data.
+
+You can see these scripts in the [nanopore_count_levels](nanopore_count_levels.md) files.
+
+An example plot from R showing the number of mapped, unmapped and the different taxonomic levels reached is shown below:
+![nanopore_counts](nanopore_count_levels_files/unamed-chunk-2-1.png)
 
 ---
 
