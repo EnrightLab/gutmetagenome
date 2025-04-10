@@ -1,5 +1,5 @@
 ---
-title: "Part II Project - Illumina Analysis"
+title: "Part II Project - Nanopore Count Analysis"
 author: "Dalia Bornstein"
 date: "2024-11-21"
 output:
@@ -17,36 +17,33 @@ output:
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
-# Load Libraries
+# R Analysis of Nanopore Taxonomic Count Summaryies.
+
+These have been produced from the Kraken Report files using a perl script [scripts/read_counts.pl](attached)
+
+## Load Libraries
+
 ```{r message=FALSE}
 library(RColorBrewer); packageVersion("RColorBrewer")
-library(dada2); packageVersion("dada2")
 library(kableExtra) ; packageVersion("kableExtra")
-library(microbiome); packageVersion("microbiome")
-library(microViz); packageVersion("microViz")
-library(phyloseq); packageVersion("phyloseq")
-library(Biostrings); packageVersion("Biostrings")
 library(ggplot2); packageVersion("ggplot2")
 theme_set(theme_bw()); # Set ggplot theme
 library(dplyr); packageVersion("dplyr")
-library(gdata); packageVersion("gdata")
+library(gtools); packageVersion("gtools")
 ```
 
+## Read the Table
+
+Read in [tables/nanopore_counts.txt](nanopore_counts.txt) and make a bar-chart. The first numeric column is unmapped reads, the remaining columns decay from the total number of mapped reads.
+
 ```{r}
-path <- "rawReads_16s"
-list.files(path)
-```
+nanopore_table <- read.table("tables/nanopore_counts.txt",header=TRUE,row.names=1,sep="\t")
+subtable=nanopore_table[,c(2:11)]
+subtable=subtable[,mixedorder(colnames(subtable))]
+nanopore_table[,c(2:11)] <- subtable
+colnames(nanopore_table)[2:11] <- colnames(subtable)
+kable(nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),],caption = "Nanopore Metagenomic Classification Levels per Sample")
 
-# List Names in Functional Way
-```{r}
-# Forward and reverse fastq filenames have format
-
-fnFs <- sort(list.files(path, pattern="_R1.fastq.gz", full.names = TRUE))
-fnRs <- sort(list.files(path, pattern="_R2.fastq.gz", full.names = TRUE))
-
-# Extract sample names, assuming filenames have format
-
-sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
-
-kable(sample.names,caption = "Sample Names")
+barplot(as.matrix(nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),c(2:11)]),beside=T,col=rainbow(11),las=1,names=c(1:10),ylab="No. of Reads")
+legend("topright",nanopore_table[c(1,2,4,6,7,8,9,10,11,12,13),1],fill=rainbow(11))
 ```
