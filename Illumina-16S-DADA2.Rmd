@@ -173,7 +173,7 @@ colours=brewer.pal(n = 10, name = "Set3")
 barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
 
 sample_list <- sample.names[c(10,4,3,9,8,2,5,6,7,1)]
-pie(track[sample_list,1]/(sum(track[sample_list,1])),labels = paste0(names(track[sample_list,1]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,1])))*100,"%"),cex=0.5,col=colours,main="Raw Illumina Readpairs per Sample")
+pie(track[sample_list,6]/(sum(track[sample_list,6])),labels = paste0(names(track[sample_list,6]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,6])))*100,"%"),cex=0.5,col=colours,main="Illumina Readpairs per Sample")
  
 colours=brewer.pal(n = 6, name = "Set1")
 names(colours)=c("input","filtered","denoisedF","denoisedR","merged","nonchim")
@@ -190,7 +190,7 @@ colours=brewer.pal(n = 10, name = "Set3")
 barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
 
 sample_list <- sample.names[c(10,4,3,9,8,2,5,6,7,1)]
-pie(track[sample_list,1]/(sum(track[sample_list,1])),labels = paste0(names(track[sample_list,1]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,1])))*100,"%"),cex=0.5,col=colours,main="Raw Illumina Readpairs per Sample")
+pie(track[sample_list,6]/(sum(track[sample_list,6])),labels = paste0(names(track[sample_list,6]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,6])))*100,"%"),cex=0.5,col=colours,main="Illumina Readpairs per Sample")
  
 colours=brewer.pal(n = 6, name = "Set1")
 names(colours)=c("input","filtered","denoisedF","denoisedR","merged","nonchim")
