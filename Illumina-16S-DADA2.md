@@ -96,7 +96,7 @@ library(Biostrings); packageVersion("Biostrings")
 library(ggplot2); packageVersion("ggplot2")
 ```
 
-    ## [1] '3.5.1'
+    ## [1] '3.5.2'
 
 ``` r
 theme_set(theme_bw()); # Set ggplot theme
@@ -387,7 +387,7 @@ barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumin
 
 ``` r
 sample_list <- sample.names[c(10,4,3,9,8,2,5,6,7,1)]
-pie(track[sample_list,6]/(sum(track[sample_list,6])),labels = paste0(names(track[sample_list,6]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,6])))*100,"%"),cex=0.5,col=colours,main="Illumina Readpairs per Sample")
+pie(track[sample_list,6]/(sum(track[sample_list,6])),labels = paste0(names(track[sample_list,6]),"\n",as.numeric(track[sample_list,6]/(sum(track[sample_list,6])))*100,"%"),cex=0.5,col=colours,main="Illumina Readpairs per Sample")
 ```
 
 ![](Illumina-16S-DADA2_files/figure-gfm/unnamed-chunk-16-2.png)<!-- -->
@@ -411,7 +411,7 @@ colours=brewer.pal(n = 10, name = "Set3")
 barplot(track[,1],las=2,cex.names=0.5,cex.axis=0.6,col=colours,main="Raw Illumina Readpairs per Sample")
 
 sample_list <- sample.names[c(10,4,3,9,8,2,5,6,7,1)]
-pie(track[sample_list,6]/(sum(track[sample_list,6])),labels = paste0(names(track[sample_list,6]),"\n",as.numeric(track[sample_list,1]/(sum(track[sample_list,6])))*100,"%"),cex=0.5,col=colours,main="Illumina Readpairs per Sample")
+pie(track[sample_list,6]/(sum(track[sample_list,6])),labels = paste0(names(track[sample_list,6]),"\n",as.numeric(track[sample_list,6]/(sum(track[sample_list,6])))*100,"%"),cex=0.5,col=colours,main="Illumina Readpairs per Sample")
  
 colours=brewer.pal(n = 6, name = "Set1")
 names(colours)=c("input","filtered","denoisedF","denoisedR","merged","nonchim")
@@ -466,7 +466,7 @@ taxa3 <- addSpecies(taxa3, silva_species,verbose=TRUE)
 ```
 
     ## 716 out of 4649 were assigned to the species level.
-    ## Of which 573 had genera consistent with the input table.
+    ## Of which 572 had genera consistent with the input table.
 
 We now will make a new species column in our original taxa object to add
 this species data to, we’ll first populate it with the species calls
@@ -607,58 +607,58 @@ ord.nmds.bray <- ordinate(ps.prop, method="NMDS", distance="bray")
 ```
 
     ## Run 0 stress 0.09393564 
-    ## Run 1 stress 0.09393558 
+    ## Run 1 stress 0.09393575 
+    ## ... Procrustes: rmse 0.001087188  max resid 0.002223096 
+    ## ... Similar to previous best
+    ## Run 2 stress 0.09393546 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.0009340714  max resid 0.001908575 
+    ## ... Procrustes: rmse 0.0002121537  max resid 0.0004355483 
     ## ... Similar to previous best
-    ## Run 2 stress 0.09393559 
-    ## ... Procrustes: rmse 0.0008975316  max resid 0.001832712 
+    ## Run 3 stress 0.09393571 
+    ## ... Procrustes: rmse 0.0002772145  max resid 0.0005694731 
     ## ... Similar to previous best
-    ## Run 3 stress 0.1907867 
-    ## Run 4 stress 0.09393564 
-    ## ... Procrustes: rmse 0.0009554229  max resid 0.001948992 
+    ## Run 4 stress 0.09393567 
+    ## ... Procrustes: rmse 0.000776888  max resid 0.001586783 
     ## ... Similar to previous best
-    ## Run 5 stress 0.09393539 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.0005406043  max resid 0.001107499 
+    ## Run 5 stress 0.09393563 
+    ## ... Procrustes: rmse 0.0001832899  max resid 0.000365424 
     ## ... Similar to previous best
-    ## Run 6 stress 0.09393576 
-    ## ... Procrustes: rmse 0.000499376  max resid 0.001000454 
+    ## Run 6 stress 0.09393554 
+    ## ... Procrustes: rmse 0.0001303703  max resid 0.0002675046 
     ## ... Similar to previous best
-    ## Run 7 stress 0.09393566 
-    ## ... Procrustes: rmse 0.0006222856  max resid 0.00127174 
+    ## Run 7 stress 0.1283188 
+    ## Run 8 stress 0.1283186 
+    ## Run 9 stress 0.1907871 
+    ## Run 10 stress 0.1508571 
+    ## Run 11 stress 0.09393567 
+    ## ... Procrustes: rmse 0.0008159219  max resid 0.00165634 
     ## ... Similar to previous best
-    ## Run 8 stress 0.09393544 
-    ## ... Procrustes: rmse 0.0001553806  max resid 0.0003088697 
+    ## Run 12 stress 0.09393597 
+    ## ... Procrustes: rmse 0.001045591  max resid 0.002127083 
     ## ... Similar to previous best
-    ## Run 9 stress 0.09393572 
-    ## ... Procrustes: rmse 0.0006636323  max resid 0.001350163 
+    ## Run 13 stress 0.09393561 
+    ## ... Procrustes: rmse 0.0007479096  max resid 0.001523557 
     ## ... Similar to previous best
-    ## Run 10 stress 0.09393604 
-    ## ... Procrustes: rmse 0.0009096904  max resid 0.001859621 
+    ## Run 14 stress 0.09393576 
+    ## ... Procrustes: rmse 0.0008866052  max resid 0.001806607 
     ## ... Similar to previous best
-    ## Run 11 stress 0.09393583 
-    ## ... Procrustes: rmse 0.0005789284  max resid 0.001170955 
+    ## Run 15 stress 0.09393581 
+    ## ... Procrustes: rmse 0.0009230523  max resid 0.001870121 
     ## ... Similar to previous best
-    ## Run 12 stress 0.09393538 
-    ## ... New best solution
-    ## ... Procrustes: rmse 7.364521e-05  max resid 0.000152964 
+    ## Run 16 stress 0.09393597 
+    ## ... Procrustes: rmse 0.001036466  max resid 0.002101815 
     ## ... Similar to previous best
-    ## Run 13 stress 0.142675 
-    ## Run 14 stress 0.1859593 
-    ## Run 15 stress 0.1283182 
-    ## Run 16 stress 0.09393548 
-    ## ... Procrustes: rmse 0.0003423544  max resid 0.0006962277 
+    ## Run 17 stress 0.142675 
+    ## Run 18 stress 0.09393554 
+    ## ... Procrustes: rmse 0.0006804502  max resid 0.001384705 
     ## ... Similar to previous best
-    ## Run 17 stress 0.09393574 
-    ## ... Procrustes: rmse 0.0005474074  max resid 0.001106313 
+    ## Run 19 stress 0.09393579 
+    ## ... Procrustes: rmse 0.0009222455  max resid 0.001876692 
     ## ... Similar to previous best
-    ## Run 18 stress 0.1907863 
-    ## Run 19 stress 0.1859593 
-    ## Run 20 stress 0.09393573 
-    ## ... Procrustes: rmse 0.0006096214  max resid 0.001239341 
+    ## Run 20 stress 0.09393591 
+    ## ... Procrustes: rmse 0.000983211  max resid 0.002006779 
     ## ... Similar to previous best
-    ## *** Best solution repeated 4 times
+    ## *** Best solution repeated 14 times
 
 ``` r
 plot_ordination(ps.prop, ord.nmds.bray, color="SampleID", title="Bray NMDS")
