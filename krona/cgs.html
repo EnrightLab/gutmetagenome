@@ -1,9 +1,52 @@
 <HTML>
-<FONT FACE="Arial">
-<H1>Genomics Facility Status</H1>
+<body style="background-color:white;">
+<style>
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1.4em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+body {
+  font-family: -apple-system, system-ui, Helvetica, Arial, sans-serif;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+</style>
+
+
+<H1>Genomics Facility Live Status</H1>
 
 <H3>Sequencer Status</H3>
-<TABLE BORDER="1">
+<TABLE class="styled-table">
 <TR><TD>Machine</TD><TD>Status</TD><TD>Samples Run (4 weeks)</TD><TD>Experiments Run (4 weeks)</TD></TR>
 <TR><TD>Illumina MiSeq</TD><TD>Sequencing</TD><TD>567</TD><TD>52</TD></TR>
 <TR><TD>Illumina NextSeq</TD><TD>Sequencing</TD><TD>47</TD><TD>12</TD></TR>
@@ -11,7 +54,7 @@
 </TABLE>
 
 <H3>Throughput</H3>
-<TABLE BORDER="1">
+<TABLE class="styled-table">
 <TR><TD>Machine</TD><TD>Read Length (Avg)</TD><TD>Gigabases</TD></TR>
 <TR><TD>Illumina</TD><TD>136</TD><TD>683 Gigabases</TD></TR>
 <TR><TD>Nanopore</TD><TD>2688</TD><TD>678 Gigabases</TD></TR>
