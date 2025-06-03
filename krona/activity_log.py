@@ -327,7 +327,7 @@ pp["Samples Avg"]=pp["Samples"].rolling(4,center=True).mean()
 
 #display(pp)
 
-plt.figure(figsize=(14.1, 5.0))
+plt.figure(figsize=(13.7, 5.0))
 sns.set_theme(rc={'figure.figsize':(14.7,5.0)})
 plt=sns.lineplot(x="Week",y="Samples Avg",data=pp,color="orange",label="No. Samples")
 plt=sns.lineplot(x="Week",y="Bp Avg",data=pp,color="red",label="Total Gigabases")
