@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 
 fastq=""
-with open('fastq.txt', 'r') as file:
+with open('/Users/aje/bin/gutmetagenome/krona/fastq.txt', 'r') as file:
     for line in file:
         fastq = fastq + line.strip()
 
@@ -23,7 +23,7 @@ current_date_time = now.strftime("%H:%M:%S, %d/%m/%Y")
 
 months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
-f = open("cgs.html","w")
+f = open("/Users/aje/bin/gutmetagenome/krona/cgs.html","w")
 
 def html_h(file,level,text):
     file.write("<H" + str(level) + ">" + text + "</H" + str(level) + ">\n")
