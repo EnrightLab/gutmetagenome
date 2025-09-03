@@ -172,7 +172,7 @@ yearly=df[df["Age"] <= 365]
 
 df["Experiments"]=1
 
-summary=np.empty([3,12])
+summary=np.empty([4,12])
 
 platforms=["MISEQ","NEXSEQ","PROMETHION","SANGER"]
 index=0
