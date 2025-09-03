@@ -261,6 +261,7 @@ pivot=pd.pivot_table(df_new,index=['Year','Mon','Week','NiceWeek'], columns=['Pl
 
 width = 0.8
 plt.figure(figsize=(6.6, 4))
+plt.bar(pivot.index,pivot["Total_bp"]["PROMETHION"]+pivot["Total_bp"]["NEXSEQ"]+pivot["Total_bp"]["MISEQ"]+pivot["Total_bp"]["SANGER"],label="Sanger",color='green')
 plt.bar(pivot.index,pivot["Total_bp"]["PROMETHION"]+pivot["Total_bp"]["NEXSEQ"]+pivot["Total_bp"]["MISEQ"],label="Illumina MiSeq",color='orange')
 plt.bar(pivot.index,pivot["Total_bp"]["PROMETHION"]+pivot["Total_bp"]["NEXSEQ"],label="Illumina NextSeq",color='red')
 plt.bar(pivot.index,pivot["Total_bp"]["PROMETHION"],label="Nanopore",color='darkblue')
@@ -277,6 +278,7 @@ plt.close
 
 width = 0.8
 plt.figure(figsize=(6.6, 4))
+plt.bar(pivot.index,pivot["Samples"]["PROMETHION"]+pivot["Samples"]["NEXSEQ"]+pivot["Samples"]["MISEQ"]+pivot["Samples"]["SANGER"],label="Sanger",color='green')
 plt.bar(pivot.index,pivot["Samples"]["PROMETHION"]+pivot["Samples"]["NEXSEQ"]+pivot["Samples"]["MISEQ"],label="MiSeq",color='orange')
 plt.bar(pivot.index,pivot["Samples"]["PROMETHION"]+pivot["Samples"]["NEXSEQ"],label="NextSeq",color='red')
 plt.bar(pivot.index,pivot["Samples"]["PROMETHION"],label="Nanopore",color='darkblue')
