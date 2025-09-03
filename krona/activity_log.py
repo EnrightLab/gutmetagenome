@@ -315,11 +315,11 @@ pivot=pd.pivot_table(df_new,index=['Year','Mon','Week','NiceWeek'], columns=['Pl
 df_new=df
 pivot=pd.pivot_table(df_new,index=['Year','Mon','Week','NiceWeek'], columns=['Platform'],aggfunc=len, fill_value=0).reset_index()
 
-pp=pd.DataFrame(pivot["Total_bp"]["PROMETHION"] + pivot["Total_bp"]["MISEQ"] + pivot["Total_bp"]["NEXSEQ"],columns=["Experiments"])
+pp=pd.DataFrame(pivot["Total_bp"]["PROMETHION"] + pivot["Total_bp"]["MISEQ"] + pivot["Total_bp"]["NEXSEQ"] + pivot["Total_bp"]["SANGER"],columns=["Experiments"])
 pivot=pd.pivot_table(df_new,index=['Year','Mon','Week','NiceWeek'], columns=['Platform'],aggfunc="sum", fill_value=0).reset_index()
 
-pp["Total_bp"]=pivot["Total_bp"]["PROMETHION"] + pivot["Total_bp"]["MISEQ"] + pivot["Total_bp"]["NEXSEQ"]
-pp["Samples"]=pivot["Samples"]["PROMETHION"] + pivot["Samples"]["MISEQ"] + pivot["Samples"]["NEXSEQ"]
+pp["Total_bp"]=pivot["Total_bp"]["PROMETHION"] + pivot["Total_bp"]["MISEQ"] + pivot["Total_bp"]["NEXSEQ"] + pivot["Total_bp"]["SANGER"]
+pp["Samples"]=pivot["Samples"]["PROMETHION"] + pivot["Samples"]["MISEQ"] + pivot["Samples"]["NEXSEQ"] + pivot["Samples"]["SANGER"]
 pp["Week"]=pivot["NiceWeek"]
 
 pp["Experiments Avg"]=pp["Experiments"].rolling(4,center=True).mean()
