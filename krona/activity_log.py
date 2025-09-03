@@ -174,7 +174,7 @@ df["Experiments"]=1
 
 summary=np.empty([3,12])
 
-platforms=["MISEQ","NEXSEQ","PROMETHION"]
+platforms=["MISEQ","NEXSEQ","PROMETHION","SANGER"]
 index=0
 for platform in (platforms):
     dfw=weekly[weekly["Platform"] == platform]
@@ -200,7 +200,7 @@ for platform in (platforms):
     index=index+1
 
 
-summary = pd.DataFrame(summary,dtype=str,index=pd.Index(['Illumina MiSeq', 'Illumina NextSeq', 'Nanopore PromethION'], name='Rows'),columns=pd.Index(['Weekly Samples', 'Monthly Samples', 'Yearly Samples', 'All Samples','Weekly Bp', 'Monthly Bp', 'Yearly Bp', 'All Bp','Weekly Ex', 'Monthly Ex', 'Yearly Ex', 'All Ex'], name='Cols'))
+summary = pd.DataFrame(summary,dtype=str,index=pd.Index(['Illumina MiSeq', 'Illumina NextSeq', 'Nanopore PromethION', 'Sanger'], name='Rows'),columns=pd.Index(['Weekly Samples', 'Monthly Samples', 'Yearly Samples', 'All Samples','Weekly Bp', 'Monthly Bp', 'Yearly Bp', 'All Bp','Weekly Ex', 'Monthly Ex', 'Yearly Ex', 'All Ex'], name='Cols'))
 summary = summary.astype({"Weekly Bp": float, "Monthly Bp": float, "Yearly Bp": float, "All Bp": float})
 
 
